@@ -40,7 +40,7 @@ function getDetails(idResult) {
   fetch(`/api/details/${idResult}`).then((res) =>
     res.json().then((data) => {
       console.log(data)
-      let detailResults = data["dataRespone"];
+      let detailResults = data["dataResponse"];
       let commentReults = data["commentResponse"];
       console.log(commentReults)
       detailResults.forEach((detailResult) => {

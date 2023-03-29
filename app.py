@@ -64,31 +64,48 @@ def details_page(idResult):
 @app.route("/api/details/<idResult>", methods=["GET"])
 def details_get(idResult):
     obj_id = ObjectId(idResult)
-    detail_list = list(collection.find({'_id': obj_id}))
-    print(detail_list)
-    #commentList = detail_list['commentId']
-    #print(commentList)
-    
-    
-    # commentResponse = []
-    # for commentId in detail_list:
-    #     commentId['_id'] = str(commentId['_id']) #comments_collection.find_one({"_id", ObjectId(comment_id)})
-    #     commentResponse.append(commentId)
-    #print(commentId)
-    #commentResponse = []
-    dataRespone = []
-    for doc in detail_list:
-       #if (doc == detail_list['commentId']):    
-            # comments_collection.find_one({"_id":doc}) 
-            #ommentResponse.append()
-           
-       #else: 
-            doc['_id'] = str(doc['_id'])
-            dataRespone.append(doc)   
+    detail_list = collection.find({'_id': obj_id})
+    # for doc in detail_list:
+    #      print(doc)
+    #  commentResponse = []
+    # dataResponse = []
+    # for doc in detail_list:
+    #     print(doc)           
+    #     doc['_id'] = str(doc['_id'])
+       
         
-  
+        
+    #     #if 'commentId' in doc:   #false
+            
+    #     for comment_id in doc['commentId']:         
+    #         print(comment_id)  
+    #     comment = comments_collection.find_one({'_id': doc['commentId']})
+    #     print(comment)
+    #     doc['commentId'] = str(doc['commentId'])
+    #     commentResponse.append(comment)
+    #     dataResponse.append(doc) 
 
-    return jsonify(dataRespone=dataRespone) #,commentResponse=commentResponse
+    commentResponse = []
+    dataResponse = []
+
+    for doc in detail_list:
+        print(doc)    
+        if 'commentId' in doc: 
+            print('commentId' in doc)
+            for comment_id in doc['commentId']:
+                comment = comments_collection.find_one({'_id': comment_id})
+                if comment:
+                    comment['_id'] = str(comment['_id'])
+                    commentResponse.append(comment)
+                    
+        else:
+            print("Hi")         
+            doc['_id'] = str(doc['_id'])
+            dataResponse.append(doc) 
+                
+
+                
+    return jsonify(dataResponse=dataResponse,commentResponse=commentResponse) 
 
 @app.route("/register", methods=["POST"])
 def register():
