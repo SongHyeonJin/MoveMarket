@@ -85,12 +85,8 @@ def details_get(idResult):
           
             doc['_id'] = str(doc['_id'])
             doc['commentId'] = str(doc['commentId']) #comment['_id']
-            dataResponse.append(doc)            
-  
-            
-                
+            dataResponse.append(doc)                
 
-                
     return jsonify(dataResponse=dataResponse,commentResponse=commentResponse) 
 
 @app.route("/register", methods=["POST"])

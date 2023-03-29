@@ -19,6 +19,11 @@
             font-family: 'Sunflower', sans-serif;
         }
 
+
+        .asdf{
+         text-decoration: none; 
+        }
+
         #navBar {
             background-color: #CCCCCC;
             padding: 10px 150px;
@@ -548,12 +553,12 @@
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
                         let marketId = i["_id"];
-                        let temp_html = `<tr>
+                        let temp_html = `<a class="asdf" href="http://localhost:5000/details/${marketId}">
+                                               <tr>
                                                <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>
-                                               <td style="display:none;">${marketId}</td>
-                                            </tr>`
+                                               </tr>  </a>`
                         $("#listBody").append(temp_html);
                     });
                     setPage();
@@ -596,7 +601,7 @@
                                                <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>
-                                               <td> <a href="http://localhost:5000/details/${marketId}">${marketId} </a></td>
+                                               <td style="display:none;">${marketId}</td>
                                               
                                                
                                             </tr>`
@@ -777,9 +782,10 @@
                     // mrkt_addr_give: mrkt_addr,
                     // mrkt_id_give: mrkt_id
                 },
-                dataType: "html",
+                dataType: "TEXT",
                 success: function (response) {
-                    
+                
+                window.location.href="http://localhost:5000/details/"+mrkt_id
 
                 },
                 error: function (request, status, error) {
