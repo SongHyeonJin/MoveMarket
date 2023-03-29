@@ -21,7 +21,7 @@
 
         #navBar {
             background-color: #CCCCCC;
-            padding: 10px 150px;
+            padding: 10px 200px;
             font-size: 20px;
         }
 
@@ -45,6 +45,8 @@
         .main {
             display: flex;
             justify-content: space-around;
+            padding: 0px 70px;
+            margin: 0px 70px;
         }
 
         .main>div {
@@ -169,7 +171,11 @@
 
             <!-- Button trigger modal 우측상단 로그인, 회원가입 -->
             <ul class="nav justify-content-end">
-                {%if("document.cookie" != null)%}
+                <button id="loginbtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_login"
+                    data-bs-whatever="@mdo" onclick="setlogin()">로그인</button>
+                <button id="registerbtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_join"
+                    data-bs-whatever="@fat">회원가입</button>
+                <!-- {%if access_token != null %}
                   <li class="nav-item">
                       <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_login"
                           data-bs-whatever="@mdo">로그인</button>
@@ -177,13 +183,12 @@
                   <li class="nav-item">
                       <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_join"
                           data-bs-whatever="@fat">회원가입</button>
-                  </li>
-                    
+                  </li>        
                 {%else%}
                   <li class="nav-item">
                       <button type="button" class="btn" onclick="logout()">로그아웃</button>
                   </li>
-                {% endif %}
+                {% endif %} -->
             </ul>
         </nav>
 

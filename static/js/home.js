@@ -1,8 +1,33 @@
 // const accessToken = getCookieValue('access_token');
 // console.log(accessToken);
-
-
-
+function getCookieValue(name) {
+  let value = "; " + document.cookie;
+  let parts = value.split("; " + name + "=");
+  if (parts.length == 2) {
+  return parts.pop().split(";").shift();
+  }
+  }
+  
+  let accessToken = getCookieValue('access_token');
+  
+  let decodedToken = parseJwt(accessToken)
+  console.log(decodedToken)
+  
+  function parseJwt(accessToken) {
+  let base64Url = accessToken.split(".")[1];
+  let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  let jsonPayload = decodeURIComponent(
+  window
+  .atob(base64)
+  .split("")
+  .map(function (c) {
+  return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+  })
+  .join("")
+  );
+  
+  return JSON.parse(jsonPayload);
+  }
 
 
 $(document).ready(function () {
