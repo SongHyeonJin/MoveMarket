@@ -20,7 +20,7 @@ db = client.dbsparta
 
 comments_collection = db['newComments']
 collection = db['movemarket']
-tbuser = db['muser']
+users_collection = db['muser']
 
 
 
@@ -81,7 +81,6 @@ def details_get(idResult):
 @app.route("/register", methods=["POST"])
 def register():
     userEmail = request.form.get('userEmail')
-    userId = request.form.get('userId')
     userPwd = request.form.get('userPwd')
     userAddr = request.form.get('userAddr')
     userLevel = request.form.get('userLevel')
@@ -91,11 +90,10 @@ def register():
     file = request.files['file']
     file.save('static/imgs/' + file.filename)
 
-    doc = tbuser.find_one({"userEmail": userEmail})
+    doc = users_collection.find_one({"userEmail": userEmail})
     doc2 = {
 
        'userEmail':userEmail,
-       'userId' : userId,
        'userPwd' : userPwd_hash,
        'userAddr' : userAddr,
        'userProfile' : file.filename,
@@ -103,7 +101,7 @@ def register():
 
     }
     if not doc:
-        tbuser.insert_one(doc2)
+        users_collection.insert_one(doc2)
         return jsonify({'msg': '회원가입 성공했습니다.'}), 201
     else:
         return jsonify({'msg': '이미 존재하는 이메일 입니다'}), 409
@@ -161,21 +159,69 @@ def register():
 @app.route("/market/mapClick", methods=["POST"])
 def market_mapClick():
     cityNm = request.form['cityNm_give']
-    data = list(collection.find({"MRKTADDR1": {"$regex": cityNm, "$options": "i"}}, {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
-    return jsonify({'result': data})
+    rptVal = request.form['rbt_give']
+    # data = list(collection.find({"MRKTADDR1": {"$regex": cityNm, "$options": "i"}}, {
+    #             "_id": False, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
+
+    # data = list(collection.find(
+    #     {"MRKTADDR1": {"$regex": cityNm, "$options": "i"}, "MRKTTYPE": rptVal},
+    #     {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
+
+    data = collection.find({"MRKTADDR1": {"$regex": cityNm, "$options": "i"}, "MRKTTYPE": rptVal},
+                           {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1})
+
+    data_Array = []
+    for doc in data:
+        doc['_id'] = str(doc['_id'])
+        data_Array.append(doc)
+
+    return jsonify({'result': data_Array})
 
 @app.route("/market/searchList", methods=["POST"])
 def market_searchList():
     searchToggle = request.form['searchToggle_give']
     searchTxt = request.form['searchTxt_give']
-    if(searchToggle == "1"):
-        data = list(collection.find({"MRKTNAME": {"$regex": searchTxt, "$options": "i"}}, {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
-    elif(searchToggle == "2"):
-        data = list(collection.find({"MRKTADDR1": {"$regex": searchTxt, "$options": "i"}}, {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
-    elif(searchToggle == "3"):
-        data = list(collection.find({"MRKTADDR2": {"$regex": searchTxt, "$options": "i"}}, {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR2": 1}))
-    return jsonify({'result': data})
+    searchRbt = request.form['searchRbt_give']
+    data_Array = []
+    print(searchToggle)
+    if (searchToggle == "1"):
+        # data = list(collection.find({"MRKTNAME": {"$regex": searchTxt, "$options": "i"}}, {
+        #             "_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
+        # data = list(collection.find(
+        #     {"MRKTNAME": {"$regex": searchTxt, "$options": "i"}, "MRKTTYPE": searchRbt},
+        #     {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
+        data = collection.find(
+            {"MRKTNAME": {"$regex": searchTxt, "$options": "i"}, "MRKTTYPE": searchRbt},
+            {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1})
+        for doc in data:
+            doc['_id'] = str(doc['_id'])
+            data_Array.append(doc)
+    elif (searchToggle == "2"):
+        # data = list(collection.find({"MRKTADDR1": {"$regex": searchTxt, "$options": "i"}}, {
+        #             "_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
+        # data = list(collection.find(
+        #     {"MRKTADDR1": {"$regex": searchTxt, "$options": "i"}, "MRKTTYPE": searchRbt},
+        #     {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
+        data = collection.find(
+            {"MRKTADDR1": {"$regex": searchTxt, "$options": "i"}, "MRKTTYPE": searchRbt},
+            {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1})
+        for doc in data:
+            doc['_id'] = str(doc['_id'])
+            data_Array.append(doc)
+    elif (searchToggle == "3"):
+        # data = list(collection.find({"MRKTADDR2": {"$regex": searchTxt, "$options": "i"}}, {
+        #             "_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR2": 1}))
+        # data = list(collection.find(
+        #     {"MRKTADDR2": {"$regex": searchTxt, "$options": "i"}, "MRKTTYPE": searchRbt},
+        #     {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
+        data = collection.find(
+            {"MRKTADDR2": {"$regex": searchTxt, "$options": "i"}, "MRKTTYPE": searchRbt},
+            {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1})
+        for doc in data:
+            doc['_id'] = str(doc['_id'])
+            data_Array.append(doc)
 
+    return jsonify({'result': data_Array})
 
 
 @app.route("/login", methods=["POST"])
@@ -184,7 +230,7 @@ def login():
 
     loginPassword = request.form.get('loginPassword')  # store the json body request
     # search for user in database
-    user_from_db = tbuser.find_one({'userEmail': loginEmail})
+    user_from_db = users_collection.find_one({'userEmail': loginEmail})
 
     print(user_from_db)
     if user_from_db:
@@ -221,7 +267,7 @@ def refresh():
 @jwt_required
 def profile():
 	current_user = get_jwt_identity() # Get the identity of the current user
-	user_from_db = tbuser.find_one({'username' : current_user})
+	user_from_db = users_collection.find_one({'username' : current_user})
 	if user_from_db:
 		del user_from_db['_id'], user_from_db['password'] # delete data we don't want to return
 		return jsonify({'profile' : user_from_db }), 200

@@ -3,6 +3,10 @@
 
 <head>
     <meta charset="UTF-8">
+    <!-- font-awesome 추가 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>전(통)시(장)상황</title>
@@ -80,6 +84,62 @@
             margin: 50px 10px;
         }
 
+        .pagination {
+            background: #333;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pagination i {
+            color: #fff;
+            font-size: 1.2em;
+        }
+
+        #pageNum {
+            padding: 0;
+            margin: 0 2rem;
+            list-style-type: none;
+            display: flex;
+        }
+
+        #pageNum li a {
+            color: #fff;
+            padding: .5rem 1rem;
+            text-decoration: none;
+            opacity: .7;
+
+        }
+
+        #pageNum li a:hover {
+            opacity: 1;
+        }
+
+        #pageNum li a.active {
+            opacity: 1;
+            background: #fff;
+            color: #333;
+        }
+
+        #products {
+            width: 100%;
+        }
+
+        .col1 {
+            width: 20%;
+        }
+
+        .col2 {
+            width: 20%;
+        }
+
+        .col3 {
+            width: 60;
+        }
+
         .pageBtn {
             width: fit-content;
             margin: auto;
@@ -153,10 +213,6 @@
                             <div class="mb-3">
                                 <label for="userId" class="col-form-label">이메일</label>
                                 <input type="email" class="form-control" id="userEmail">
-                            </div>
-                            <div class="mb-3">
-                                <label for="userId" class="col-form-label">아이디</label>
-                                <input type="email" class="form-control" id="userId">
                             </div>
                             <div class="mb-3">
                                 <label for="userPwd" class="col-form-label">비밀번호</label>
@@ -319,52 +375,56 @@
                     <div class="col-sm-3" id="searchList">
                         <div class="form-group" id="marketOpen">
                             <!-- <label for="sel1">시장유형</label> -->
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1"
-                                id="sel1" checked>
-                            <label class="form-check-label" for="flexRadioDefault1">
+                            <input class="form-check-input" type="radio" name="rptcheck"
+                                id="market7" value="상설장" checked>
+                            <label class="form-check-label" for="rptcheck">
                                 상설장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
                             <!-- <label for="sel1">시장유형</label> -->
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2"
-                                id="sel1">
-                            <label class="form-check-label" for="flexRadioDefault2">
-                                오일장
+                            <input class="form-check-input" type="radio" name="rptcheck"
+                                id="market5" value="5일장">
+                            <label class="form-check-label" for="rptcheck">
+                                5일장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
                             <!-- <label for="sel1">시장유형</label> -->
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
-                                id="sel1">
-                            <label class="form-check-label" for="flexRadioDefault3">
-                                삼일장
+                            <input class="form-check-input" type="radio" name="rptcheck"
+                                id="market3" value="3일장">
+                            <label class="form-check-label" for="rptcheck">
+                                3일장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
                             <!-- <label for="sel1">시장유형</label> -->
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
-                                id="sel1">
-                            <label class="form-check-label" for="flexRadioDefault3">
-                                상설장 + 오일장
+                            <input class="form-check-input" type="radio" name="rptcheck"
+                                id="market75" value="상설장+5일장">
+                            <label class="form-check-label" for="rptcheck">
+                                상설장 + 5일장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
                             <!-- <label for="sel1">시장유형</label> -->
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault3"
-                                id="sel1">
-                            <label class="form-check-label" for="flexRadioDefault3">
-                                상설장 + 삼일장
+                            <input class="form-check-input" type="radio" name="rptcheck"
+                                id="market73" value="상설장+3일장">
+                            <label class="form-check-label" for="rptcheck">
+                                상설장 + 3일장
                             </label>
                         </div>
                     </div>
                     <div class="col-sm-9" id="getList">
                         <table class="table table-hover" id="products">
+                            <colgroup>
+                                <col class="col1">
+                                <col class="col2">
+                                <col class="col3">
+                            </colgroup>
                             <caption>
                                 <form action="" id="setRows">
                                     <input type="hidden" name="rowPerPage" value="5">
                                 </form>
-
                             </caption>
                             <thead>
                                 <tr>
@@ -381,7 +441,16 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="pageBtn">
+                        <div class="pagination">
+                            <i class="fa-solid fa-arrow-left"></i>
+                            <ol id="pageNum">
+                                <!-- <li><a href="">1</a></li>
+                                <li><a href="">2</a></li>
+                                <li><a href="">3</a></li> -->
+                            </ol>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                        <!-- <div class="pageBtn">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -399,7 +468,7 @@
                                     </li>
                                 </ul>
                             </nav>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -414,111 +483,170 @@
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
         crossorigin="anonymous"></script>
     <script>
-        // //JS 데이터 형식
-        // var a = "Hello";
-        // var b = 100;
-        // var c = [2, 5, 7, 8];
-        // var d = ["red", "green", "blue"]; //배열
-        // d.push("yellow"); //배열에 값 추가
-        // var e = {}; //객체(Object)
-        // e.name = "홍길동";
-        // e.age = 20;
-        // var f = { name: "동일인", grade: 2, phone: "010-1234-5678" };
-        // f.info = function () {
-        //     //method = 객체 안에 포함된 함수
-        //     console.log(this.name + this.grade + this.phone);
-        // }
-        // //JSON: JavaScript Object Notation, 자바스크립트 객체 표기법
-        // var people = [{ name: "동일인", grade: 2 }, { name: "홍길동", grade: 3 }];
-
-        // var a = 1; // var로 선언한 변수 등은 덮어쓰기(overwrite) 가능
-        // let aa = 1;
-        // //let aa = 2;  //중복선언 오류, 덮어쓰기(overwrite) 불가능
-
-        //함수
-        // function myfunc() { }
-        // var myfunc2 = function () { }
-        // //arrow function
-        // let sum = 0;
-        // const sumOfNum = (v) => {
-        //     for (let i = 1; i <= v; i++) sum += i;
-        // }
-        // sumOfNum(100);
-        // console.log(sum);
-
-        // // 리스트
-        // var korea = {};
-        // $.getJSON("assets/korea.json", function (json) {
-        //     korea = json;
-        //     console.log(korea);
-        // });
-
-
-        // $(".land").on("click", function () {
-        //     var id = $(this).attr("id");
-        //     //alert(id);
-        //     // if (!id) return;
-        //     // var cities = korea.korea.city;
-        //     // var city = getCityById(cities, id);
-        //     // if (city.length > 0) {
-        //     //     var cityinfo = city[0];
-        //     //     $("#name_ko").text(cityinfo.name_ko);
-        //     //     $("#name_full").text(cityinfo.name_full);
-        //     //     $("#info").text(cityinfo.info);
-        //     // }
-        // });
-
-        // function getCityById(data, id) {
-        //     return data.filter(
-        //         function (data) { return data.id == id }
-        //     );
-        // }
-
         $(document).ready(function () {
         });
+        
 
-
-        let test;
-
+        //페이징 관련 변수
+        const rowsPerPage = 10;
+        let arry_rows = [];
+        let rowsCount;
+        let pageCount;
+        let numbers;
+        let numberBtn;
+        let tableRows;
+        //화살표 추가를 위한 변수
+        let prevPageBtn = document.querySelector(".pagination .fa-arrow-left");
+        let nextPageBtn = document.querySelector(".pagination .fa-arrow-right");
+        let pageActiveIdx = 0;  //현재 보고 있는 페이지 그룹 값
+        let currentPageNum = 0; //현재 보고 있는 페이지네이션 값
+        let maxpageNum = 5;     //페이지그룹 최대 페이지 수
 
         function mytestFunction(e) {
             get_market($(e).attr('title'));
         }
 
-
         // 지도 클릭 기능
         function get_market(cityNm) {
+            let rbt_chk = $('input[name=rptcheck]:checked').val();
             $.ajax({
                 type: "POST",
                 url: "/market/mapClick",
                 data: {
-                    cityNm_give: cityNm
+                    cityNm_give: cityNm,
+                    rbt_give: rbt_chk
                 },
                 dataType: "JSON",
                 success: function (response) {
                     let rows = response["result"];
-                    console.log(rows)
+                    console.log(rows);
+                    rowsCount = rows.length;
+                    pageCount = Math.ceil(rowsCount / rowsPerPage);
                     $("#listBody").empty();
+                    $("#pageNum").empty();
                     rows.forEach(i => {
                         //"MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))                 
                         let marketNm = i["MRKTNAME"];
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
+                        let marketId = i["_id"];
                         let temp_html = `<tr>
                                                <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>
+                                               <td style="display:none;">${marketId}</td>
                                             </tr>`
                         $("#listBody").append(temp_html);
                     });
-
+                    setPage();
+                    displayRow(0);
+                    displayPage(0);
                 },
                 error: function (request, status, error) {
                     console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
                     alert("error : " + error)
                 }
             })
+
         }
+
+        function setPage() {
+            numbers = document.querySelector("#pageNum");
+            tableRows = document.querySelectorAll("#products tbody tr")
+            for (let i = 1; i <= pageCount; i++) {
+                numbers.innerHTML += `<li><a href="">${i}</a></li>`
+            }
+            numberBtn = numbers.querySelectorAll('a');
+            console.log(numberBtn)
+
+            //페이지네이션 번호 감추기
+            for (nb of numberBtn) {
+                nb.style.display = 'none';
+            }
+
+            numberBtn.forEach((item, idx) => {
+                item.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    displayRow(idx);
+                });
+            });
+        }
+
+        //실질적으로 테이블 출력하는 부분
+        function displayRow(idx) {
+            // let rowsArray = Array.from(tableRows);
+            let rowsArray = [...tableRows];
+            let page_start = idx * rowsPerPage;
+            let page_end = page_start + rowsPerPage;
+
+            //뿌려진 노드리스트를 배열로 변환 후 전부 안보이게 함
+            for (ra of rowsArray) {
+                ra.style.display = 'none';
+            }
+
+            let newRows = rowsArray.slice(page_start, page_end);
+            //그 후 디스플레이를 페이지에 맞게 다시 로드시킴
+            for (nr of newRows) {
+                // nr.style.display = 'block'; //블락시키면 컬럼 하나가 값을 다 먹어서 디자인 엉킴
+                nr.style.display = '';
+            }
+
+            for (nb of numberBtn) {
+                nb.classList.remove('active');
+            }
+            numberBtn[idx].classList.add('active');
+        }
+
+        //페이지네이션 그룹 표시 함수
+        function displayPage(num) {
+            //페이지네이션 번호 감추기
+            for (nb of numberBtn) {
+                nb.style.display = 'none';
+            }
+            let totalPageCnt = Math.ceil(pageCount / maxpageNum);
+            let pageArr = [...numberBtn];
+            let start = num * maxpageNum;
+            let end = start + maxpageNum;
+            let pageListArr = pageArr.slice(start, end);
+
+            for (let item of pageListArr) {
+                item.style.display = 'block';
+            }
+
+            if (pageActiveIdx == 0) {
+                prevPageBtn.style.display = 'none';
+            }
+            else {
+                prevPageBtn.style.display = 'block';
+            }
+
+            //마지막 그룹을 보고 있다면
+            if (pageActiveIdx == totalPageCnt - 1) {
+                nextPageBtn.style.display = 'none';
+            }
+            else {
+                nextPageBtn.style.display = 'block';
+            }
+        }
+
+        //다음 페이지 보기위한 이벤트 추가
+        nextPageBtn.addEventListener('click', () => {
+            //현재 페이지 값 * 최대로 보여줄 페이지 카운트 + 최대로 보여줄 페이지 카운트 -> 현재 페이지 0 일때도 보여줄 수 있도록
+            let nextPageNum = pageActiveIdx * maxpageNum + maxpageNum;
+            displayRow(nextPageNum)
+            ++pageActiveIdx;  //오른쪽 화살표 누르면 현재 보고있는 페이지 변수 증가
+            displayPage(pageActiveIdx);
+        });
+
+        //이전 페이지 보기위한 이벤트 추가
+        prevPageBtn.addEventListener('click', () => {
+            //현재 페이지 값 * 최대로 보여줄 페이지 카운트 + 최대로 보여줄 페이지 카운트 -> 현재 페이지 0 일때도 보여줄 수 있도록
+            let nextPageNum = pageActiveIdx * maxpageNum - maxpageNum;
+            displayRow(nextPageNum)
+            --pageActiveIdx;  //오른쪽 화살표 누르면 현재 보고있는 페이지 변수 증가
+            displayPage(pageActiveIdx);
+        });
+
 
         // 검색기능
         function get_market_detail() {
@@ -527,12 +655,16 @@
                 url: "/market/searchList",
                 data: {
                     searchTxt_give: $("#search").val(),
-                    searchToggle_give: $("#searchToggle").val()
+                    searchToggle_give: $("#searchToggle").val(),
+                    searchRbt_give: $('input[name=rptcheck]:checked').val()
                 },
                 dataType: "JSON",
                 success: function (response) {
                     let rows = response["result"];
+                    rowsCount = rows.length;
+                    pageCount = Math.ceil(rowsCount / rowsPerPage);
                     $("#listBody").empty();
+                    $("#pageNum").empty();
                     rows.forEach(i => {
                         //"MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))                 
                         let marketNm = i["MRKTNAME"];
@@ -545,14 +677,15 @@
                         }
 
                         let marketType = i["MRKTTYPE"];
+                        let marketId = i["_id"];
                         let temp_html = `<tr>
                                                <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>
+                                               <td style="display:none;">${marketId}</td>
                                             </tr>`
                         $("#listBody").append(temp_html);
                     });
-
                     setPage();
                     displayRow(0);
                     displayPage(0);
@@ -587,3 +720,76 @@
 </body>
 
 </html>
+<!-- 
+// let markets = [];
+// // 검색기능
+// function get_market_detail() {
+//     $.ajax({
+//         type: "POST",
+//         url: "/market/searchList",
+//         data: {
+//             searchTxt_give: $("#search").val(),
+//             searchToggle_give: $("#searchToggle").val()
+//         },
+//         dataType: "JSON",
+//         success: function (response) {
+//             let rows = response["result"];
+//             $("#listBody").empty();
+//             const pageLen = Math.ceil(rows.length / 10);
+//             for (let i = 0; i < pageLen; i++) {
+//                 markets.push(rows.slice(i * 10, (i + 1) * 10));
+//                 const li = document.createElement('li');
+//                 const btn = document.createElement('button');
+//                 btn.addEventListener('click', () => {
+//                     $("#listBody").empty();
+//                     $('.active').removeClass('active');
+//                     btn.classList.add('active');
+//                     markets[i].forEach(m => {
+//                         let marketNm = i["MRKTNAME"];
+//                         let marketAddr;
+//                         if ($("#searchToggle").val() == 3) {
+//                             marketAddr = i["MRKTADDR2"];
+//                         }
+//                         else {
+//                             marketAddr = i["MRKTADDR1"];
+//                         }
+
+//                         let marketType = i["MRKTTYPE"];
+//                         let temp_html = `<tr>
+//                                 <td>${marketNm}</td>
+//                                 <td>${marketType}</td>
+//                                 <td>${marketAddr}</td>
+//                               </tr>`
+//                         $("#listBody").append(temp_html);
+//                     });
+//                 })
+//                 btn.innerText = i + 1;
+//                 li.append(btn);
+//                 $(".pagination").append(li);
+//             }
+//             markets[0].forEach(i => {
+//                 //"MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))                 
+//                 let marketNm = i["MRKTNAME"];
+//                 let marketAddr;
+//                 if ($("#searchToggle").val() == 3) {
+//                     marketAddr = i["MRKTADDR2"];
+//                 }
+//                 else {
+//                     marketAddr = i["MRKTADDR1"];
+//                 }
+
+//                 let marketType = i["MRKTTYPE"];
+//                 let temp_html = `<tr>
+//                                <td>${marketNm}</td>
+//                                <td>${marketType}</td>
+//                                <td>${marketAddr}</td>
+//                             </tr>`
+//                 $("#listBody").append(temp_html);
+//             })
+//         },
+//         error: function (request, status, error) {
+//             console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
+//             alert("error : " + error)
+//         }
+//     })
+// } -->
