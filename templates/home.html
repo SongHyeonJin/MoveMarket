@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>시장을 찾아서</title>
+    
+</head>
+<body>
+<div class="space"></div>
+<div id="map" style="width:45%;height:350px;"></div>
+
+<table>
+    <tr>
+      <div id="nameResult"></div>
+    </tr>
+    <tr>
+      <td>상세주소</td>
+      <td><div id="addrResult"></div></td>
+    </tr>
+    <tr>
+      <td>시장유형</td>
+      <td><div id="openResult"></div></td>
+    </tr>
+    <tr>
+      <td>홈페이지</td>
+      <td><div id="urlResult"></div></td>
+    </tr>
+    <tr>
+      <td>상품 / 점포수</td>
+      <td><div id="prodStore"></div></td>
+    </tr>
+    <tr>
+      <td>화장실/주차장</td>
+      <td><div id="restPark"></div></td>
+    </tr>
+  </table>
+
+
+
+  <div class="comment-section">
+    <h3>Comments</h3>
+    <div class="comment-form">
+    <input id="comment" placeholder="댓글을 남겨주세요!"/>
+    <button>Post</button>  
+</div>
+
+    <ul class="comment-list">
+      <li class="comment">
+        <div class="comment-author">John Doe</div>
+        <div class="comment-body">This is a comment!</div>
+      </li>
+      <li class="comment">
+        <div class="comment-author">Jane Smith</div>
+        <div class="comment-body">Another comment!</div>
+      </li>
+    </ul>
+  </div>
+
+
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9fa54e16259e049e68a535821c9b64c2&libraries=services"></script>
+<script src="{{ url_for('static', filename='js/home.js') }}"></script>
+<link rel="stylesheet" href="/static/css/home.css">
+<script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+</body>
+</html>
