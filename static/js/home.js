@@ -5,7 +5,7 @@ $(document).ready(function () {
 });
 
 //대기
-function postComment(){
+function postComment() {
   const formData = new FormData();
   formData.append("idResult", idResult);
   formData.append("commentTitle", commentTitle);
@@ -14,21 +14,31 @@ function postComment(){
     type: "POST",
     url: "/comment",
     dataType: "json",
-    contentType: false, 
+    contentType: false,
     processData: false,
     data: formData,
-    }).done(function (result) {
-      console.log(result);
-    }).fail(function (jqXHR) {
-      console.log(jqXHR);
-    }).always(function () {
-      console.log("실행되는지 확인");
-    });
+  }).done(function (result) {
+    console.log(result);
+  }).fail(function (jqXHR) {
+    console.log(jqXHR);
+  }).always(function () {
+    console.log("실행되는지 확인");
+  });
 }
 
-
-
-
+function getComment() {
+  $.ajax({
+    type: "GET",
+    url: "/comment",
+    dataType: "json",
+  }).done(function (result) {
+    console.log(result);
+  }).fail(function (jqXHR) {
+    console.log(jqXHR);
+  }).always(function () {
+    console.log("실행되는지 확인");
+  });
+}
 
 function getDetails(idResult) {
   fetch(`/api/details/${idResult}`).then((res) =>
@@ -48,30 +58,30 @@ function getDetails(idResult) {
         let detailResult = detailResult['commentId']
         console.log(urlResult)
         urlResult = (urlResult === null) ? "준비중" : urlResult;
-        parkResult = (parkResult == "Y")? "有" : "無"
-        restResult = ( restResult == "Y")? "有" : "無"
+        parkResult = (parkResult == "Y") ? "有" : "無"
+        restResult = (restResult == "Y") ? "有" : "無"
 
         console.log(nameResult);
-        let name_html = `<div>${nameResult}</div>`;  
-        $("#nameResult").append(name_html);    
+        let name_html = `<div>${nameResult}</div>`;
+        $("#nameResult").append(name_html);
 
-        let addr_html = `<div>${addrResult}</div>`;  
-        $("#addrResult").append(addr_html);  
+        let addr_html = `<div>${addrResult}</div>`;
+        $("#addrResult").append(addr_html);
 
-        let open_html = `<div>${openResult}</div>`;  
-        $("#openResult").append(open_html);  
+        let open_html = `<div>${openResult}</div>`;
+        $("#openResult").append(open_html);
 
-        let url_html = `<div>${urlResult}</div>`;  
-        $("#urlResult").append(url_html);  
+        let url_html = `<div>${urlResult}</div>`;
+        $("#urlResult").append(url_html);
 
-        let prodStore_html = `<div>${prodResult} / ${storeResult}개</div>`;  
-        $("#prodStore").append(prodStore_html);  
+        let prodStore_html = `<div>${prodResult} / ${storeResult}개</div>`;
+        $("#prodStore").append(prodStore_html);
 
-        let restPark_html = `<div>${restResult} / ${parkResult}</div>`;  
-        $("#restPark").append(restPark_html);  
+        let restPark_html = `<div>${restResult} / ${parkResult}</div>`;
+        $("#restPark").append(restPark_html);
 
 
-      
+
 
         // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
         var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -121,8 +131,8 @@ function getDetails(idResult) {
             // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
             infowindow.setContent(
               '<div style="padding:5px;font-size:12px;">' +
-                place.place_name +
-                "</div>"
+              place.place_name +
+              "</div>"
             );
             infowindow.open(map, marker);
           });

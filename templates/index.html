@@ -540,7 +540,7 @@
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
                         let marketId = i["_id"];
-                        let temp_html = `<tr>
+                        let temp_html = `<tr  onclick="service()">
                                                <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>
@@ -583,7 +583,7 @@
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
                         let marketId = i["_id"];
-                        let temp_html = `<tr>
+                        let temp_html = `<tr  onclick="service()">
                                                <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>

@@ -27,12 +27,9 @@ function userLogin() {
   loginEmail = $("#loginEmail").val();
   loginPassword = $("#loginPassword").val();
 
-
   const formData = new FormData();
   formData.append("loginEmail",loginEmail);
   formData.append("loginPassword",loginPassword);
-
-  
 
   $.ajax({
     type: "POST",
@@ -60,6 +57,20 @@ function userLogin() {
     }).always(function () {
       console.log("실행되는지 확인");
     });
+}
+
+function userlogout() {
+
+}
+
+function service() {
+  let singnIn = "${login()}";
+  if (sinIn == ""){
+    alert("로그인 후 이용가능");
+    location.href= "$/details/<idResult>";
+  } else {
+    location.href = "$/login";
+  }
 }
 
 function register() {

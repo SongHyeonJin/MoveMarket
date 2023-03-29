@@ -301,7 +301,7 @@ def comment_post():
     }
     comments_collection.insert_one(doc)
     commentId = comments_collection.find_one(doc)
-    collection.insert_one({'commentId': commentId["_id"]})
+    collection.update_one({'_id': objectId}, {'$push': {'comments': commentId}})
     return jsonify({'msg': '응원 완료!'})
 
 
