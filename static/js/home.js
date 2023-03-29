@@ -1,15 +1,29 @@
+// const accessToken = getCookieValue('access_token');
+// console.log(accessToken);
+
+
+
+
+
 $(document).ready(function () {
   let url = window.location.href;
   let idResult = url.substring(url.lastIndexOf("/") + 1);
   getDetails(idResult);
 });
 
+let url = window.location.href;
+let idResult = url.substring(url.lastIndexOf("/") + 1);
 //대기
 function postComment(){
+
+  comment_details = $('#comment_details').val();
+
   const formData = new FormData();
+
   formData.append("idResult", idResult);
-  formData.append("commentTitle", commentTitle);
+//  formData.append("commentTitle", commentTitle);
   formData.append("comment_details", comment_details);
+  
   $.ajax({
     type: "POST",
     url: "/comment",
@@ -33,23 +47,37 @@ function postComment(){
 function getDetails(idResult) {
   fetch(`/api/details/${idResult}`).then((res) =>
     res.json().then((data) => {
-      let detailResults = data["dataRespone"];
-      let commentReults = data["commentResponse"];
-      console.log(commentReults)
+      console.log(data)
+      let detailResults = data["dataResponse"];
+      let commentResults = data["commentResponse"];
+      let commentDetails = commentResults['comment_details']
+      console.log(commentDetails)
+      
+      commentResults.forEach((commentResult) => {
+        
+      commentResult = commentResult['comment_details']
+
+      let comment_html = `<div>${commentResult}</div>`;
+      $("#commentResult").append(comment_html); 
+
+      });
+
       detailResults.forEach((detailResult) => {
-        let addrResult = detailResult["주소(도로명)"];
-        let nameResult = detailResult["시장(상점가명)"];
-        let openResult = detailResult["시장유형"];
-        let urlResult = detailResult["홈페이지주소"];
-        let prodResult = detailResult["취급품목"];
-        let storeResult = detailResult["점포수"];
-        let restResult = detailResult["공중화장실보유여부"];
-        let parkResult = detailResult["주차장보유여부"];
-        let detailResult = detailResult['commentId']
+        let addrResult = detailResult["MRKTADDR1"];
+        let nameResult = detailResult["MRKTNAME"];
+        let openResult = detailResult["MRKTTYPE"];
+        let urlResult = detailResult["MRKTPAGE"];
+        let prodResult = detailResult["MRKTITEM"];
+        let storeResult = detailResult["MRKTCOUNT"];
+        let restResult = detailResult["MRKTTOILET"];
+        let parkResult = detailResult["MRKTPARK"];
+   
+
+       // let detailResult = detailResult['commentId']
         console.log(urlResult)
-        urlResult = (urlResult === null) ? "준비중" : urlResult;
-        parkResult = (parkResult == "Y")? "有" : "無"
-        restResult = ( restResult == "Y")? "有" : "無"
+        urlResult = (urlResult === null || urlResult === undefined) ? "준비중" : urlResult;
+        parkResult = (parkResult == "Y")? "있음" : "없음"
+        restResult = ( restResult == "Y")? "있음" : "없음"
 
         console.log(nameResult);
         let name_html = `<div>${nameResult}</div>`;  
@@ -70,7 +98,7 @@ function getDetails(idResult) {
         let restPark_html = `<div>${restResult} / ${parkResult}</div>`;  
         $("#restPark").append(restPark_html);  
 
-
+  
       
 
         // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
@@ -89,7 +117,7 @@ function getDetails(idResult) {
         var ps = new kakao.maps.services.Places();
 
         // 키워드로 장소를 검색합니다
-        ps.keywordSearch(nameResult, placesSearchCB); /////////////////요기
+        ps.keywordSearch(addrResult, placesSearchCB); /////////////////요기
 
         // 키워드 검색 완료 시 호출되는 콜백함수 입니다
         function placesSearchCB(data, status, pagination) {
@@ -132,8 +160,12 @@ function getDetails(idResult) {
   );
 }
 
+function parseJwt (token) {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+  }).join(''));
 
-
-
-
-
+  return JSON.parse(jsonPayload);
+}

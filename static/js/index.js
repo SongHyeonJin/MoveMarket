@@ -21,6 +21,10 @@ function getList() {
     });
 }
 
+function logout(){
+  $.removeCookie('document.cookie', {path:'/'});
+  window.location.reload();
+}
 
 function userLogin() {
     
@@ -52,6 +56,8 @@ function userLogin() {
       const cookieString = `access_token=${accessToken}; expires=${expireDate.toUTCString()}; path=/`;
       document.cookie = cookieString;
            
+      alert('로그인 성공')
+      window.location.reload();
     }).fail(function (jqXHR) {
       console.log(jqXHR);
       $("#errorMsg").show();
@@ -115,6 +121,8 @@ if ($("#userPwd").val() != $('#userPwdCheck').val()) {
 
     }).done(function (result) {
         console.log(result);
+        alert('회원가입 성공')
+        window.location.reload();
     }).fail(function (jqXHR) {
         console.log(jqXHR);
         $("#errorMsg").show();
