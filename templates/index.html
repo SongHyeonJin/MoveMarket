@@ -65,8 +65,9 @@
             margin-top: 100px;
         }
 
-        #findList {
-            height: max-content
+        #findList{
+            height: max-content;
+            
         }
 
         #searchList {
@@ -76,9 +77,9 @@
         #getList {
             border: 1px solid rgba(0, 0, 0, 0.2);
         }
-
-        #listBody tr {
-            height: 20px;
+        #listTr {
+            height: 20px !important;
+            
         }
 
         #listBody tr:hover{
@@ -131,6 +132,10 @@
         #products {
             width: 100%;
             height: 500px;
+
+            /* display: flex;
+            flex-direction: column;
+            justify-content: flex-start; */
         }
 
         .col1 {
@@ -443,7 +448,7 @@
                                 </tr>
                             </thead>
                             <tbody id="listBody">
-                                <tr>
+                                <tr id="listTr">
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -731,7 +736,7 @@
 
                         let marketType = i["MRKTTYPE"];
                         let marketId = i["_id"];
-                        let temp_html = `<tr>
+                        let temp_html = `<tr id="listTr">
                                                <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>

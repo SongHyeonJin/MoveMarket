@@ -37,19 +37,18 @@ function getDetails(idResult) {
       let commentReults = data["commentResponse"];
       console.log(commentReults)
       detailResults.forEach((detailResult) => {
-        let addrResult = detailResult["주소(도로명)"];
-        let nameResult = detailResult["시장(상점가명)"];
-        let openResult = detailResult["시장유형"];
-        let urlResult = detailResult["홈페이지주소"];
-        let prodResult = detailResult["취급품목"];
-        let storeResult = detailResult["점포수"];
-        let restResult = detailResult["공중화장실보유여부"];
-        let parkResult = detailResult["주차장보유여부"];
-        let detailResult = detailResult['commentId']
+        let addrResult = detailResult["MRKTADDR1"];
+        let nameResult = detailResult["MRKTNAME"];
+        let openResult = detailResult["MRKTTYPE"];
+        let urlResult = detailResult["MRKTPAGE"];
+        let prodResult = detailResult["MRKTITEM"];
+        let storeResult = detailResult["MRKTCOUNT"];
+        let restResult = detailResult["MRKTTOILET"];
+        let parkResult = detailResult["MRKTPARK"];
         console.log(urlResult)
         urlResult = (urlResult === null) ? "준비중" : urlResult;
-        parkResult = (parkResult == "Y")? "有" : "無"
-        restResult = ( restResult == "Y")? "有" : "無"
+        parkResult = (parkResult == "Y")? "있음" : "없음"
+        restResult = ( restResult == "Y")? "있음" : "없음"
 
         console.log(nameResult);
         let name_html = `<div>${nameResult}</div>`;  
