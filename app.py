@@ -62,25 +62,26 @@ def details_page(idResult):
    
     return render_template('home.html', idResult=idResult)
 
-@app.route("/api/details/<idResult>", methods=["GET"])
-def details_get(idResult):
-    obj_id = ObjectId(idResult)
-    detail_list = list(collection.find({'_id': obj_id}))
-    commentResponse = []
-    for comment_id in detail_list['commentId']:
-        comment = comments_collection.find_one({"_id", ObjectId(comment_id)})
-        commentResponse.append(comment)
-    dataRespone = []
-    for doc in detail_list:
-        doc['_id'] = str(doc['_id'])
+# @app.route("/api/details/<idResult>", methods=["GET"])
+# def details_get(idResult):
+#     obj_id = ObjectId(idResult)
+#     detail_list = list(collection.find({'_id': obj_id}))
+#     commentResponse = []
+#     for comment_id in detail_list['commentId']:
+#         comment = comments_collection.find_one({"_id", ObjectId(comment_id)})
+#         commentResponse.append(comment)
+#     dataRespone = []
+#     for doc in detail_list:
+#         doc['_id'] = str(doc['_id'])
 
-        dataRespone.append(doc)   
-    return jsonify(dataRespone=dataRespone, commentResponse=commentResponse)
+#         dataRespone.append(doc)   
+#     return jsonify(dataRespone=dataRespone, commentResponse=commentResponse)
 
 
 @app.route("/register", methods=["POST"])
 def register():
     userEmail = request.form.get('userEmail')
+    userId = request.form.get('userId')
     userPwd = request.form.get('userPwd')
     userAddr = request.form.get('userAddr')
     userLevel = request.form.get('userLevel')
@@ -94,6 +95,7 @@ def register():
     doc2 = {
 
        'userEmail':userEmail,
+       'userId':userId,
        'userPwd' : userPwd_hash,
        'userAddr' : userAddr,
        'userProfile' : file.filename,
@@ -156,6 +158,18 @@ def register():
 
 ############################################################################################################################
 
+@app.route("/market", methods=['POST'])
+def all_market():
+    rptVal = request.form['rbt_give']
+    data = collection.find({"MRKTTYPE": rptVal},
+                           {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1})
+    data_Array = []
+    for doc in data:
+        doc['_id'] = str(doc['_id'])
+        data_Array.append(doc)
+
+    return jsonify({'result': data_Array})
+
 @app.route("/market/mapClick", methods=["POST"])
 def market_mapClick():
     cityNm = request.form['cityNm_give']
@@ -216,7 +230,7 @@ def market_searchList():
         #     {"_id": 0, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))
         data = collection.find(
             {"MRKTADDR2": {"$regex": searchTxt, "$options": "i"}, "MRKTTYPE": searchRbt},
-            {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1})
+            {"_id": 1, "MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR2": 1})
         for doc in data:
             doc['_id'] = str(doc['_id'])
             data_Array.append(doc)
