@@ -9,7 +9,6 @@
 <div class="space"></div>
 <div id="map" style="width:45%;height:350px;"></div>
 
-<div id="mapList">
 <table>
     <tr>
       <div id="nameResult"></div>
@@ -39,16 +38,16 @@
 
 
   <div class="comment-section">
-    <h3 id="ctitle">댓 글</h3>
+    <h3>댓 글</h3>
     <div class="comment-form">
-    <textarea id="comment" placeholder="댓글을 남겨주세요!" rows="3"></textarea>
-    <button>등록</button>  
+    <textarea id="comment_details" placeholder="댓글을 남겨주세요!"></textarea>
+    <button type="button" onclick="postComment()">Post</button>  
 </div>
 
     <ul class="comment-list">
       <li class="comment">
         <div class="comment-author">John Doe</div>
-        <div class="comment-body">This is a comment!</div>
+        <div id="commentResult"></div>
       </li>
       <li class="comment">
         <div class="comment-author">Jane Smith</div>
@@ -56,14 +55,14 @@
       </li>
     </ul>
   </div>
-</div>
 
 
 
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9fa54e16259e049e68a535821c9b64c2&libraries=services"></script>
+<script type="text/javascript"
+ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=577a0dd41159a80d202a029c984e8544&libraries=services"></script>
 <script src="{{ url_for('static', filename='js/home.js') }}"></script>
 <link rel="stylesheet" href="/static/css/home.css">
 <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>

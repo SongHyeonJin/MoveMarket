@@ -21,6 +21,10 @@ function getList() {
     });
 }
 
+function logout(){
+  $.removeCookie('document.cookie', {path:'/'});
+  window.location.reload();
+}
 
 function userLogin() {
     

@@ -62,6 +62,7 @@ td {
     border: 1px solid #ddd;
     padding: 20px;
     width: 45%;
+    height: max-content;
     margin: auto;
     margin-bottom: 30pxs;
     box-sizing: border-box;

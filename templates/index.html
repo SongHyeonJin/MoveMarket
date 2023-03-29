@@ -169,14 +169,21 @@
 
             <!-- Button trigger modal 우측상단 로그인, 회원가입 -->
             <ul class="nav justify-content-end">
-                <li class="nav-item">
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_login"
-                        data-bs-whatever="@mdo">로그인</button>
-                </li>
-                <li class="nav-item">
-                    <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_join"
-                        data-bs-whatever="@fat">회원가입</button>
-                </li>
+                {%if("document.cookie" != null)%}
+                  <li class="nav-item">
+                      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_login"
+                          data-bs-whatever="@mdo">로그인</button>
+                  </li>
+                  <li class="nav-item">
+                      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_join"
+                          data-bs-whatever="@fat">회원가입</button>
+                  </li>
+                    
+                {%else%}
+                  <li class="nav-item">
+                      <button type="button" class="btn" onclick="logout()">로그아웃</button>
+                  </li>
+                {% endif %}
             </ul>
         </nav>
 
@@ -709,10 +716,10 @@
                         let marketType = i["MRKTTYPE"];
                         let marketId = i["_id"];
                         let temp_html = `<tr id="listTr">
-                                               <td>${marketNm}</td>
+                                               <td><a href"http://localhost:5000/details/${marketId}">${marketNm}</a><input type="hidden" value=${marketId} /></td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>
-                                               <td style="display:none;">${marketId}</td>
+                                               
                                             </tr>`
                         $("#listBody").append(temp_html);
                     });
@@ -736,18 +743,19 @@
             let mrkt_type = td.eq(1).text();
             let mrkt_addr = td.eq(2).text();
             let mrkt_id = td.eq(3).text();
-
+            console.log(mrkt_id)
             $.ajax({
                 type: "GET",
-                url: "/details/" + mrkt_id,
+                url: `/details/${mrkt_id}`,
                 data: {},
-                dataType: "JSON",
+                dataType: "TEXT",
                 success: function (response) {
-
+                  window.location.href="http://localhost:5000/details/"+mrkt_id
                 },
                 error: function (request, status, error) {
                     console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
                     alert("error : " + error)
+                    
                 }
             })
         });

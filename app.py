@@ -12,8 +12,9 @@ app = Flask(__name__)
 from pymongo import MongoClient
 
 client = MongoClient('mongodb+srv://sparta:test@cluster0.9cacroc.mongodb.net/?retryWrites=true&w=majority')
-
 db = client.dbsparta
+
+
 
 comments_collection = db['newComments']
 collection = db['movemarket']
@@ -52,6 +53,33 @@ def details_page(idResult):
    
     return render_template('home.html', idResult=idResult)
 
+@app.route("/api/details/<idResult>", methods=["GET"])
+def details_get(idResult):
+    obj_id = ObjectId(idResult)
+    detail_list = (collection.find({'_id': obj_id}))
+
+
+    commentResponse = []
+    dataResponse = []
+    doc = detail_list[0]
+    if 'commentId' not in doc or doc['commentId'] is None:
+        doc['_id'] = str(doc['_id'])
+
+        dataResponse.append(doc)
+    else:
+       for doc in detail_list:
+            for comment_id in doc['commentId']:
+                comment = comments_collection.find_one({'_id': comment_id})
+                if comment:
+                    comment['_id'] = str(comment['_id'])
+                    commentResponse.append(comment)
+
+            doc['_id'] = str(doc['_id'])
+            doc['commentId'] = str(doc['commentId']) #comment['_id']
+            dataResponse.append(doc)
+
+    return jsonify(dataResponse=dataResponse,commentResponse=commentResponse) 
+
 @app.route("/register", methods=["POST"])
 def register():
     userEmail = request.form.get('userEmail')
@@ -74,7 +102,7 @@ def register():
        'userAddr' : userAddr,
        'userProfile' : file.filename,
        'userLevel' : userLevel
-       
+
     }
     if not doc:
         users_collection.insert_one(doc2)
@@ -188,18 +216,24 @@ def profile():
 
 @app.route("/comment", methods=["POST"])
 def comment_post():
-    commentTitle = request.form["commentTitle"]
-    comment_details = request.form["comment_details"]
+   # commentTitle = request.form["commentTitle"]
+    comment_details = request.form.get("comment_details")
+    print(comment_details)
     idResult = request.form["idResult"]
     # post_from_db = collection.find_one({'_id': idResult})
     doc = {
         'parentId': idResult,
-        'commentTitle': commentTitle,
+        #'commentTitle': commentTitle,
         'comment_details': comment_details
     }
+   
     comments_collection.insert_one(doc)
     commentId = comments_collection.find_one(doc)
-    collection.insert_one({'commentId': commentId["_id"]})
+    print(commentId)
+    objectId = ObjectId(idResult)
+    collection.update_one({'_id': objectId},{'$push': {'commentId': commentId["_id"]}})
+    
+    print(collection.find_one({'_id': objectId}))
     return jsonify({'msg': '응원 완료!'})
 
 
