@@ -389,7 +389,6 @@
                 <div class="row" id="findList">
                     <div class="col-sm-3" id="searchList">
                         <div class="form-group" id="marketOpen">
-                            <!-- <label for="sel1">시장유형</label> -->
                             <input class="form-check-input" type="radio" name="rptcheck"
                                 id="market7" value="상설장"  onclick="all_market()" checked>
                             <label class="form-check-label" for="rptcheck">
@@ -397,7 +396,6 @@
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <!-- <label for="sel1">시장유형</label> -->
                             <input class="form-check-input" type="radio" name="rptcheck"
                                 id="market5" value="5일장" onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
@@ -405,7 +403,6 @@
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <!-- <label for="sel1">시장유형</label> -->
                             <input class="form-check-input" type="radio" name="rptcheck"
                                 id="market3" value="3일장" onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
@@ -413,7 +410,6 @@
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <!-- <label for="sel1">시장유형</label> -->
                             <input class="form-check-input" type="radio" name="rptcheck"
                                 id="market75" value="상설장+5일장" onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
@@ -421,7 +417,6 @@
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <!-- <label for="sel1">시장유형</label> -->
                             <input class="form-check-input" type="radio" name="rptcheck"
                                 id="market73" value="상설장+3일장" onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
@@ -459,31 +454,9 @@
                         <div class="pagination">
                             <i class="fa-solid fa-arrow-left"></i>
                             <ol id="pageNum">
-                                <!-- <li><a href="">1</a></li>
-                                <li><a href="">2</a></li>
-                                <li><a href="">3</a></li> -->
                             </ol>
                             <i class="fa-solid fa-arrow-right"></i>
                         </div>
-                        <!-- <div class="pageBtn">
-                            <nav aria-label="Page navigation example">
-                                <ul class="pagination">
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                    <li class="page-item">
-                                        <a class="page-link" href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -540,8 +513,7 @@
                     $("#listBody").empty();
                     $("#pageNum").empty();
                     
-                    rows.forEach(i => {
-                        //"MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))                 
+                    rows.forEach(i => {           
                         let marketNm = i["MRKTNAME"];
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
@@ -583,8 +555,7 @@
                     pageCount = Math.ceil(rowsCount / rowsPerPage);
                     $("#listBody").empty();
                     $("#pageNum").empty();
-                    rows.forEach(i => {
-                        //"MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))                 
+                    rows.forEach(i => {            
                         let marketNm = i["MRKTNAME"];
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
@@ -757,6 +728,32 @@
             })
         }
 
+        // 2023-03-29 20:41 JSY 추가
+        $("#products tbody").on("click", "tr", function () {
+            let tr = $(this);
+            let td = tr.children();
+            let mrkt_nm = td.eq(0).text();
+            let mrkt_type = td.eq(1).text();
+            let mrkt_addr = td.eq(2).text();
+            let mrkt_id = td.eq(3).text();
+
+            $.ajax({
+                type: "GET",
+                url: "/details/" + mrkt_id,
+                data: {},
+                dataType: "JSON",
+                success: function (response) {
+
+                },
+                error: function (request, status, error) {
+                    console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
+                    alert("error : " + error)
+                }
+            })
+        });
+
+
+
         //모달
         const exampleModal = document.getElementById('exampleModal')
         exampleModal.addEventListener('show.bs.modal', event => {
@@ -779,76 +776,3 @@
 </body>
 
 </html>
-<!-- 
-// let markets = [];
-// // 검색기능
-// function get_market_detail() {
-//     $.ajax({
-//         type: "POST",
-//         url: "/market/searchList",
-//         data: {
-//             searchTxt_give: $("#search").val(),
-//             searchToggle_give: $("#searchToggle").val()
-//         },
-//         dataType: "JSON",
-//         success: function (response) {
-//             let rows = response["result"];
-//             $("#listBody").empty();
-//             const pageLen = Math.ceil(rows.length / 10);
-//             for (let i = 0; i < pageLen; i++) {
-//                 markets.push(rows.slice(i * 10, (i + 1) * 10));
-//                 const li = document.createElement('li');
-//                 const btn = document.createElement('button');
-//                 btn.addEventListener('click', () => {
-//                     $("#listBody").empty();
-//                     $('.active').removeClass('active');
-//                     btn.classList.add('active');
-//                     markets[i].forEach(m => {
-//                         let marketNm = i["MRKTNAME"];
-//                         let marketAddr;
-//                         if ($("#searchToggle").val() == 3) {
-//                             marketAddr = i["MRKTADDR2"];
-//                         }
-//                         else {
-//                             marketAddr = i["MRKTADDR1"];
-//                         }
-
-//                         let marketType = i["MRKTTYPE"];
-//                         let temp_html = `<tr>
-//                                 <td>${marketNm}</td>
-//                                 <td>${marketType}</td>
-//                                 <td>${marketAddr}</td>
-//                               </tr>`
-//                         $("#listBody").append(temp_html);
-//                     });
-//                 })
-//                 btn.innerText = i + 1;
-//                 li.append(btn);
-//                 $(".pagination").append(li);
-//             }
-//             markets[0].forEach(i => {
-//                 //"MRKTNAME": 1, "MRKTTYPE": 1, "MRKTADDR1": 1}))                 
-//                 let marketNm = i["MRKTNAME"];
-//                 let marketAddr;
-//                 if ($("#searchToggle").val() == 3) {
-//                     marketAddr = i["MRKTADDR2"];
-//                 }
-//                 else {
-//                     marketAddr = i["MRKTADDR1"];
-//                 }
-
-//                 let marketType = i["MRKTTYPE"];
-//                 let temp_html = `<tr>
-//                                <td>${marketNm}</td>
-//                                <td>${marketType}</td>
-//                                <td>${marketAddr}</td>
-//                             </tr>`
-//                 $("#listBody").append(temp_html);
-//             })
-//         },
-//         error: function (request, status, error) {
-//             console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
-//             alert("error : " + error)
-//         }
-//     })
-// } -->
