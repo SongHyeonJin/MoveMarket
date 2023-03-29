@@ -1,10 +1,13 @@
+
+
 $(document).ready(function () {
   let url = window.location.href;
   let idResult = url.substring(url.lastIndexOf("/") + 1);
   getDetails(idResult);
 });
+
 let url = window.location.href;
-  let idResult = url.substring(url.lastIndexOf("/") + 1);
+let idResult = url.substring(url.lastIndexOf("/") + 1);
 //대기
 function postComment(){
 
@@ -41,8 +44,19 @@ function getDetails(idResult) {
     res.json().then((data) => {
       console.log(data)
       let detailResults = data["dataResponse"];
-      let commentReults = data["commentResponse"];
-      console.log(commentReults)
+      let commentResults = data["commentResponse"];
+      let commentDetails = commentResults['comment_details']
+      console.log(commentDetails)
+      
+      commentResults.forEach((commentResult) => {
+        
+      commentResult = commentResult['comment_details']
+
+      let comment_html = `<div>${commentResult}</div>`;
+      $("#commentResult").append(comment_html); 
+
+      });
+
       detailResults.forEach((detailResult) => {
         let addrResult = detailResult["MRKTADDR1"];
         let nameResult = detailResult["MRKTNAME"];
@@ -52,6 +66,8 @@ function getDetails(idResult) {
         let storeResult = detailResult["MRKTCOUNT"];
         let restResult = detailResult["MRKTTOILET"];
         let parkResult = detailResult["MRKTPARK"];
+   
+
        // let detailResult = detailResult['commentId']
         console.log(urlResult)
         urlResult = (urlResult === null || urlResult === undefined) ? "준비중" : urlResult;
@@ -77,7 +93,7 @@ function getDetails(idResult) {
         let restPark_html = `<div>${restResult} / ${parkResult}</div>`;  
         $("#restPark").append(restPark_html);  
 
-
+  
       
 
         // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다

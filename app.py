@@ -58,50 +58,36 @@ def search_get():
 
 @app.route("/details/<idResult>")
 def details_page(idResult):
-   
+
+
     return render_template('home.html', idResult=idResult)
 
 @app.route("/api/details/<idResult>", methods=["GET"])
 def details_get(idResult):
     obj_id = ObjectId(idResult)
-    detail_list = collection.find({'_id': obj_id})
-    # for doc in detail_list:
-    #      print(doc)
-    #  commentResponse = []
-    # dataResponse = []
-    # for doc in detail_list:
-    #     print(doc)           
-    #     doc['_id'] = str(doc['_id'])
-       
-        
-        
-    #     #if 'commentId' in doc:   #false
-            
-    #     for comment_id in doc['commentId']:         
-    #         print(comment_id)  
-    #     comment = comments_collection.find_one({'_id': doc['commentId']})
-    #     print(comment)
-    #     doc['commentId'] = str(doc['commentId'])
-    #     commentResponse.append(comment)
-    #     dataResponse.append(doc) 
-
+    detail_list = (collection.find({'_id': obj_id}))
+    
+    
     commentResponse = []
     dataResponse = []
-
-    for doc in detail_list:
-        print(doc)    
-        if 'commentId' in doc: 
-            print('commentId' in doc)
+    doc = detail_list[0]
+    if 'commentId' not in doc or doc['commentId'] is None:
+        doc['_id'] = str(doc['_id'])
+       
+        dataResponse.append(doc)           
+    else:
+       for doc in detail_list:
             for comment_id in doc['commentId']:
                 comment = comments_collection.find_one({'_id': comment_id})
                 if comment:
                     comment['_id'] = str(comment['_id'])
                     commentResponse.append(comment)
-                    
-        else:
-            print("Hi")         
+          
             doc['_id'] = str(doc['_id'])
-            dataResponse.append(doc) 
+            doc['commentId'] = str(doc['commentId']) #comment['_id']
+            dataResponse.append(doc)            
+  
+            
                 
 
                 
