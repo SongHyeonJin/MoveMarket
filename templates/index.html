@@ -14,12 +14,14 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sunflower:wght@500&display=swap');
+
         @font-face {
             /* 애플산돌고딕 폰트 적용 */
             font-family: "Hawook";
             src: url("/static/fonts/Gugi-Regular.ttf") format("truetype");
             font-weight: normal;
-}
+        }
+
         #mainList {
             font-family: 'Sunflower', sans-serif;
         }
@@ -765,10 +767,10 @@
                         let marketType = i["MRKTTYPE"];
                         let marketId = i["_id"];
                         let temp_html = `<tr id="listTr">
-                                               <td><a href"http://localhost:5000/details/${marketId}">${marketNm}</a><input type="hidden" value=${marketId} /></td>
+                                               <td>${marketNm}</td>
                                                <td>${marketType}</td>
                                                <td>${marketAddr}</td>
-                                               
+                                               <td style="display:none;">${marketId}</td>
                                             </tr>`
                         $("#listBody").append(temp_html);
                     });
@@ -792,21 +794,26 @@
             let mrkt_type = td.eq(1).text();
             let mrkt_addr = td.eq(2).text();
             let mrkt_id = td.eq(3).text();
+            let chk_token = getCookie("access_token")
             console.log(mrkt_id)
-            $.ajax({
-                type: "GET",
-                url: `/details/${mrkt_id}`,
-                data: {},
-                dataType: "TEXT",
-                success: function (response) {
-                    window.location.href = "http://localhost:5000/details/" + mrkt_id
-                },
-                error: function (request, status, error) {
-                    console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
-                    alert("error : " + error)
-
-                }
-            })
+            if (chk_token != null) {
+                $.ajax({
+                    type: "GET",
+                    url: `/details/${mrkt_id}`,
+                    data: {},
+                    dataType: "TEXT",
+                    success: function (response) {
+                        window.location.href = "http://localhost:5000/details/" + mrkt_id
+                    },
+                    error: function (request, status, error) {
+                        console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
+                        alert("error : " + error)
+                    }
+                })
+            }
+            else {
+                alert("로그인 정보가 없습니다. 로그인하세요.")
+            }
         });
 
 
