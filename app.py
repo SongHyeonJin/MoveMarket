@@ -261,22 +261,29 @@ def comment_post():
 
 @app.route("/comment/delete", methods=["POST"])
 def comment_delete():
-
+     commentId = request.form.get("commentId")
      comment_content = request.form.get("comment_content")
      idResult = request.form['idResult']
+     userId = request.form.get("userId")
 
+    #  commentId = request.form["test2"]
+    #  idResult = request.form["idResult"]
+     
+     commentId2 = ObjectId(commentId)   
+    
      doc ={
-          'parentId':idResult,
-          'comment_details':comment_content
-         #'userId' : userId 
-     }  
-     print(doc) 
-     commentId = comments_collection.find_one(doc)
-     print(commentId)      
+          'parentId':idResult,     
+        #   'userId' : userId,
+          '_id':commentId2
+     }        
+     find_data = comments_collection.find_one(doc)
+     print(find_data)      
      comments_collection.delete_one(doc)
+     
+     
      objectId = ObjectId(idResult)
 
-     collection.update_one({'_id': objectId}, {'$pull': {'commentId': commentId["_id"]}})
+     collection.update_one({'_id': objectId}, {'$pull': {'commentId': commentId}})
      
      return jsonify({'msg': '삭제!'})
 
