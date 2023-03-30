@@ -190,6 +190,8 @@ def login():
             }
             access_token = create_access_token(identity=user_from_db['userId'], additional_claims=additional_claims)  # create access token
             refresh_token = create_refresh_token(identity=user_from_db['userId'], additional_claims=additional_claims)  # create refresh token
+            users_collection.update_one({'userEmail': loginEmail}, 
+                                        {"$set": {'refresh_token': refresh_token}})
 
             return jsonify(access_token=access_token, refresh_token=refresh_token), 200
 
@@ -200,6 +202,7 @@ def login():
 def refresh():
 	current_user = get_jwt_identity() # Get the identity of the current user
 	access_token = create_access_token(identity=current_user)
+    
 	return jsonify(access_token=access_token), 200
 
 # X
@@ -214,16 +217,33 @@ def profile():
 	else:
 		return jsonify({'msg': 'Profile not found'}), 404
 
+@app.route("/api/comment", methods=["POST"])
+def comment_get():
+    idResult = request.form.get("idResult")     
+    
+    commentResponse = []
+    
+    # objectId = ObjectId(idResult)
+    comments = comments_collection.find({'parentId': idResult})
+   
+    for doc in comments:
+        print(doc)
+        doc['_id'] = str(doc['_id'])
+        
+        commentResponse.append(doc)
+    # print(commentResponse)
+    return jsonify(commentResponse=commentResponse)
+
 @app.route("/comment", methods=["POST"])
 def comment_post():
-   # commentTitle = request.form["commentTitle"]
+    userId = request.form["userId"]
     comment_details = request.form.get("comment_details")
     print(comment_details)
     idResult = request.form["idResult"]
     # post_from_db = collection.find_one({'_id': idResult})
     doc = {
         'parentId': idResult,
-        #'commentTitle': commentTitle,
+        'userId' : userId,
         'comment_details': comment_details
     }
    
@@ -234,7 +254,35 @@ def comment_post():
     collection.update_one({'_id': objectId},{'$push': {'commentId': commentId["_id"]}})
     
     print(collection.find_one({'_id': objectId}))
-    return jsonify({'msg': '응원 완료!'})
+    return jsonify({'msg': '업로드!'})
+
+@app.route("/comment/delete", methods=["POST"])
+def comment_delete():
+     commentId = request.form.get("commentId")
+     comment_content = request.form.get("comment_content")
+     idResult = request.form['idResult']
+     userId = request.form.get("userId")
+
+    #  commentId = request.form["test2"]
+    #  idResult = request.form["idResult"]
+     
+     commentId2 = ObjectId(commentId)   
+    
+     doc ={
+          'parentId':idResult,     
+        #   'userId' : userId,
+          '_id':commentId2
+     }        
+     find_data = comments_collection.find_one(doc)
+     print(find_data)      
+     comments_collection.delete_one(doc)
+     
+     
+     objectId = ObjectId(idResult)
+
+     collection.update_one({'_id': objectId}, {'$pull': {'commentId': commentId}})
+     
+     return jsonify({'msg': '삭제!'})
 
 
 if __name__ == '__main__':

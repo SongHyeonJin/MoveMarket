@@ -1,3 +1,33 @@
+function getCookieValue(name) {
+  let value = "; " + document.cookie;
+  let parts = value.split("; " + name + "=");
+  if (parts.length == 2) {
+  return parts.pop().split(";").shift();
+  }
+  }
+  
+  let accessToken = getCookieValue('access_token');
+  
+  let decodedToken = parseJwt(accessToken)
+  console.log(decodedToken)
+  
+  function parseJwt(accessToken) {
+  let base64Url = accessToken.split(".")[1];
+  let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+  let jsonPayload = decodeURIComponent(
+  window
+  .atob(base64)
+  .split("")
+  .map(function (c) {
+  return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+  })
+  .join("")
+  );
+  
+  return JSON.parse(jsonPayload);
+  }
+
+  
 function getList() {
   let searchValue = $("#search").val();
 
@@ -19,11 +49,6 @@ function getList() {
         console.log(addrResult);
       });
     });
-}
-
-function logout(){
-  $.removeCookie('document.cookie', {path:'/'});
-  window.location.reload();
 }
 
 function userLogin() {
@@ -48,14 +73,16 @@ function userLogin() {
 
     }).done(function (result) {
       
-      console.log(result);
+      // console.log(result);
       
       const accessToken = result['access_token']
+      const refreshToken = result['refresh_token']
       const expireDate = new Date();
       expireDate.setDate(expireDate.getDate() + 7);
-      const cookieString = `access_token=${accessToken}; expires=${expireDate.toUTCString()}; path=/`;
+      expireDate.setDate(expireDate.getDate() +30)
+      const cookieString = `access_token=${accessToken}; refresh_token=${refreshToken} expires=${expireDate.toUTCString()}; path=/`;
       document.cookie = cookieString;
-           
+     
       alert('로그인 성공')
       window.location.reload();
     }).fail(function (jqXHR) {
@@ -65,6 +92,8 @@ function userLogin() {
       console.log("실행되는지 확인");
     });
 }
+
+
 
 function register() {
 

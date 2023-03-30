@@ -13,6 +13,12 @@
   font-weight: normal;
 }
 
+#navBar {
+  background-color: #CCCCCC;
+  padding: 10px 200px;
+  font-size: 20px;
+}
+
 #nameResult {
   text-align: center;
   font-size: 50px;
@@ -38,6 +44,14 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
+}
+
+#mList{
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+
+  margin-bottom: 50px;
 }
 
 table {
@@ -96,8 +110,8 @@ td {
   button {
     width: 15%;
     padding: 10px 20px;
-    background-color: #333;
-    color: #fff;
+    background-color: #CCCCCC;
+    color: #333;
     border: none;
     border-radius: 5px;
     cursor: pointer;
