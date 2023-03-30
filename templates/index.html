@@ -14,7 +14,12 @@
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sunflower:wght@500&display=swap');
-
+        @font-face {
+            /* 애플산돌고딕 폰트 적용 */
+            font-family: "Hawook";
+            src: url("/static/fonts/Gugi-Regular.ttf") format("truetype");
+            font-weight: normal;
+}
         #mainList {
             font-family: 'Sunflower', sans-serif;
         }
@@ -28,7 +33,7 @@
         .mytitle {
             width: 100%;
             height: 150px;
-
+            font-family: "Hawook";
             color: black;
 
             display: flex;
@@ -68,9 +73,9 @@
             margin-top: 100px;
         }
 
-        #findList{
+        #findList {
             height: max-content;
-            
+
         }
 
         #searchList {
@@ -80,14 +85,16 @@
         #getList {
             border: 1px solid rgba(0, 0, 0, 0.2);
         }
+
         #listTr {
             height: 20px !important;
-            
+
         }
 
-        #listBody tr:hover{
+        #listBody tr:hover {
             cursor: pointer;
         }
+
         #marketOpen {
             margin: 50px 10px;
         }
@@ -171,7 +178,7 @@
 
             <!-- Button trigger modal 우측상단 로그인, 회원가입 -->
             <ul class="nav justify-content-end" id="loginLayout">
-               
+
             </ul>
         </nav>
 
@@ -384,36 +391,36 @@
                 <div class="row" id="findList">
                     <div class="col-sm-3" id="searchList">
                         <div class="form-group" id="marketOpen">
-                            <input class="form-check-input" type="radio" name="rptcheck"
-                                id="market7" value="상설장"  onclick="all_market()" checked>
+                            <input class="form-check-input" type="radio" name="rptcheck" id="market7" value="상설장"
+                                onclick="all_market()" checked>
                             <label class="form-check-label" for="rptcheck">
                                 상설장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <input class="form-check-input" type="radio" name="rptcheck"
-                                id="market5" value="5일장" onclick="all_market()">
+                            <input class="form-check-input" type="radio" name="rptcheck" id="market5" value="5일장"
+                                onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
                                 5일장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <input class="form-check-input" type="radio" name="rptcheck"
-                                id="market3" value="3일장" onclick="all_market()">
+                            <input class="form-check-input" type="radio" name="rptcheck" id="market3" value="3일장"
+                                onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
                                 3일장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <input class="form-check-input" type="radio" name="rptcheck"
-                                id="market75" value="상설장+5일장" onclick="all_market()">
+                            <input class="form-check-input" type="radio" name="rptcheck" id="market75" value="상설장+5일장"
+                                onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
                                 상설장 + 5일장
                             </label>
                         </div>
                         <div class="form-group" id="marketOpen">
-                            <input class="form-check-input" type="radio" name="rptcheck"
-                                id="market73" value="상설장+3일장" onclick="all_market()">
+                            <input class="form-check-input" type="radio" name="rptcheck" id="market73" value="상설장+3일장"
+                                onclick="all_market()">
                             <label class="form-check-label" for="rptcheck">
                                 상설장 + 3일장
                             </label>
@@ -469,7 +476,7 @@
         $(document).ready(function () {
             all_market();
             chkLogin();
-        });        
+        });
 
         // nav 로그인,회원가입 || 로그아웃 부분
         function chkLogin() {
@@ -543,9 +550,9 @@
         function mytestFunction(e) {
             get_market($(e).attr('title'));
         }
-        
+
         // 처음 리스트
-        function all_market(){
+        function all_market() {
             let rbt_chk = $('input[name=rptcheck]:checked').val();
             $.ajax({
                 type: "POST",
@@ -561,8 +568,8 @@
                     pageCount = Math.ceil(rowsCount / rowsPerPage);
                     $("#listBody").empty();
                     $("#pageNum").empty();
-                    
-                    rows.forEach(i => {           
+
+                    rows.forEach(i => {
                         let marketNm = i["MRKTNAME"];
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
@@ -604,7 +611,7 @@
                     pageCount = Math.ceil(rowsCount / rowsPerPage);
                     $("#listBody").empty();
                     $("#pageNum").empty();
-                    rows.forEach(i => {            
+                    rows.forEach(i => {
                         let marketNm = i["MRKTNAME"];
                         let marketAddr = i["MRKTADDR1"];
                         let marketType = i["MRKTTYPE"];
@@ -792,12 +799,12 @@
                 data: {},
                 dataType: "TEXT",
                 success: function (response) {
-                  window.location.href="http://localhost:5000/details/"+mrkt_id
+                    window.location.href = "http://localhost:5000/details/" + mrkt_id
                 },
                 error: function (request, status, error) {
                     console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)
                     alert("error : " + error)
-                    
+
                 }
             })
         });

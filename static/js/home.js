@@ -1,68 +1,71 @@
 // const accessToken = getCookieValue('access_token');
 // console.log(accessToken);
+
 function getCookieValue(name) {
   let value = "; " + document.cookie;
   let parts = value.split("; " + name + "=");
   if (parts.length == 2) {
-  return parts.pop().split(";").shift();
+    return parts.pop().split(";").shift();
   }
-  }
-  
-  let accessToken = getCookieValue('access_token');
-  
-  let decodedToken = parseJwt(accessToken)
-  console.log(decodedToken)
-  
-  function parseJwt(accessToken) {
+}
+
+let accessToken = getCookieValue('access_token');
+
+let decodedToken = parseJwt(accessToken)
+console.log(decodedToken)
+
+function parseJwt(accessToken) {
   let base64Url = accessToken.split(".")[1];
   let base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
   let jsonPayload = decodeURIComponent(
-  window
-  .atob(base64)
-  .split("")
-  .map(function (c) {
-  return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-  })
-  .join("")
+    window
+      .atob(base64)
+      .split("")
+      .map(function (c) {
+        return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join("")
   );
-  
-  return JSON.parse(jsonPayload);
-  }
 
+  return JSON.parse(jsonPayload);
+}
 
 $(document).ready(function () {
   let url = window.location.href;
   let idResult = url.substring(url.lastIndexOf("/") + 1);
   getDetails(idResult);
+  chkLogin();
 });
+
+
 
 let url = window.location.href;
 let idResult = url.substring(url.lastIndexOf("/") + 1);
 //대기
-function postComment(){
+function postComment() {
 
   comment_details = $('#comment_details').val();
 
   const formData = new FormData();
 
   formData.append("idResult", idResult);
-//  formData.append("commentTitle", commentTitle);
+  //  formData.append("commentTitle", commentTitle);
   formData.append("comment_details", comment_details);
-  
+
   $.ajax({
     type: "POST",
     url: "/comment",
     dataType: "json",
-    contentType: false, 
+    contentType: false,
     processData: false,
     data: formData,
-    }).done(function (result) {
-      console.log(result);
-    }).fail(function (jqXHR) {
-      console.log(jqXHR);
-    }).always(function () {
-      console.log("실행되는지 확인");
-    });
+  }).done(function (result) {
+    console.log(result);
+  }).fail(function (jqXHR) {
+    console.log(jqXHR);
+  }).always(function () {
+    console.log("실행되는지 확인");
+  });
 }
 
 
@@ -77,13 +80,13 @@ function getDetails(idResult) {
       let commentResults = data["commentResponse"];
       let commentDetails = commentResults['comment_details']
       console.log(commentDetails)
-      
-      commentResults.forEach((commentResult) => {
-        
-      commentResult = commentResult['comment_details']
 
-      let comment_html = `<div>${commentResult}</div>`;
-      $("#commentResult").append(comment_html); 
+      commentResults.forEach((commentResult) => {
+
+        commentResult = commentResult['comment_details']
+
+        let comment_html = `<div>${commentResult}</div>`;
+        $("#commentResult").append(comment_html);
 
       });
 
@@ -96,35 +99,35 @@ function getDetails(idResult) {
         let storeResult = detailResult["MRKTCOUNT"];
         let restResult = detailResult["MRKTTOILET"];
         let parkResult = detailResult["MRKTPARK"];
-   
 
-       // let detailResult = detailResult['commentId']
+
+        // let detailResult = detailResult['commentId']
         console.log(urlResult)
         urlResult = (urlResult === null || urlResult === undefined) ? "준비중" : urlResult;
-        parkResult = (parkResult == "Y")? "있음" : "없음"
-        restResult = ( restResult == "Y")? "있음" : "없음"
+        parkResult = (parkResult == "Y") ? "있음" : "없음"
+        restResult = (restResult == "Y") ? "있음" : "없음"
 
         console.log(nameResult);
-        let name_html = `<div>${nameResult}</div>`;  
-        $("#nameResult").append(name_html);    
+        let name_html = `<div>${nameResult}</div>`;
+        $("#nameResult").append(name_html);
 
-        let addr_html = `<div>${addrResult}</div>`;  
-        $("#addrResult").append(addr_html);  
+        let addr_html = `<div>${addrResult}</div>`;
+        $("#addrResult").append(addr_html);
 
-        let open_html = `<div>${openResult}</div>`;  
-        $("#openResult").append(open_html);  
+        let open_html = `<div>${openResult}</div>`;
+        $("#openResult").append(open_html);
 
-        let url_html = `<div>${urlResult}</div>`;  
-        $("#urlResult").append(url_html);  
+        let url_html = `<div>${urlResult}</div>`;
+        $("#urlResult").append(url_html);
 
-        let prodStore_html = `<div>${prodResult} / ${storeResult}개</div>`;  
-        $("#prodStore").append(prodStore_html);  
+        let prodStore_html = `<div>${prodResult} / ${storeResult}개</div>`;
+        $("#prodStore").append(prodStore_html);
 
-        let restPark_html = `<div>${restResult} / ${parkResult}</div>`;  
-        $("#restPark").append(restPark_html);  
+        let restPark_html = `<div>${restResult} / ${parkResult}</div>`;
+        $("#restPark").append(restPark_html);
 
-  
-      
+
+
 
         // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
         var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -174,8 +177,8 @@ function getDetails(idResult) {
             // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
             infowindow.setContent(
               '<div style="padding:5px;font-size:12px;">' +
-                place.place_name +
-                "</div>"
+              place.place_name +
+              "</div>"
             );
             infowindow.open(map, marker);
           });
@@ -185,12 +188,12 @@ function getDetails(idResult) {
   );
 }
 
-function parseJwt (token) {
-  var base64Url = token.split('.')[1];
-  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-  var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-  }).join(''));
+// function parseJwt(token) {
+//   var base64Url = token.split('.')[1];
+//   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+//   var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
+//     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+//   }).join(''));
 
-  return JSON.parse(jsonPayload);
-}
+//   return JSON.parse(jsonPayload);
+// }
