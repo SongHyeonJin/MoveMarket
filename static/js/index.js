@@ -43,8 +43,10 @@ function getList() {
       searchResults.forEach((searchResult) => {
         let idResult = searchResult["_id"];
         let addrResult = searchResult["주소(도로명)"];
+        let url_test = document.location.href;
+        // document.location.href.split("/")[4];
       
-        let temp_html = `<div> <a href="http://localhost:5000/details/${idResult}">${addrResult}</a></div>`;
+        let temp_html = `<div> <a href="${url_test}/${idResult}">${addrResult}</a></div>`;
         $("#getLists").append(temp_html);
         console.log(addrResult);
       });

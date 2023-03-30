@@ -795,6 +795,7 @@
             let mrkt_addr = td.eq(2).text();
             let mrkt_id = td.eq(3).text();
             let chk_token = getCookie("access_token")
+            let url_test = document.location.href;
             console.log(mrkt_id)
             if (chk_token != null) {
                 $.ajax({
@@ -803,7 +804,7 @@
                     data: {},
                     dataType: "TEXT",
                     success: function (response) {
-                        window.location.href = "http://localhost:5000/details/" + mrkt_id
+                        window.location.href = url_test + "details/" + mrkt_id
                     },
                     error: function (request, status, error) {
                         console.log("error code : " + request.status + "\n message : " + request.responseText + "\n error : " + error)

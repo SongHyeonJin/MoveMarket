@@ -1,79 +1,95 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta charset="utf-8">
-    <title>시장을 찾아서</title>
-    
+  <meta charset="utf-8">
+  <title>시장을 찾아서</title>
+
 </head>
+
 <body>
   <nav class="navbar navbar-inverse" id="navBar">
     <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a class="nav-link" aria-current="page" href="/">Home</a>
-        </li>
+      <li class="nav-item">
+        <a class="nav-link" aria-current="page" href="/">Home</a>
+      </li>
     </ul>
 
     <!-- Button trigger modal 우측상단 로그인, 회원가입 -->
     <ul class="nav justify-content-end" id="loginLayout">
-       
+
     </ul>
-</nav>
-<div class="space"></div>
-<div id="map" style="width:45%;height:350px;"></div>
+  </nav>
+  <div class="space"></div>
+  <div id="map" style="width:45%;height:350px;"></div>
 
-<div id="nameResult"></div>
-<div id="mList">
-<table>
-    <tr>
-      <td>상세주소</td>
-      <td><div id="addrResult"></div></td>
-    </tr>
-    <tr>
-      <td>시장유형</td>
-      <td><div id="openResult"></div></td>
-    </tr>
-    <tr>
-      <td>홈페이지</td>
-      <td><div id="urlResult"></div></td>
-    </tr>
-    <tr>
-      <td>상품 / 점포수</td>
-      <td><div id="prodStore"></div></td>
-    </tr>
-    <tr>
-      <td>화장실/주차장</td>
-      <td><div id="restPark"></div></td>
-    </tr>
-  </table>
+  <div id="nameResult"></div>
+  <div id="mList">
+    <table>
+      <tr>
+        <td>상세주소</td>
+        <td>
+          <div id="addrResult"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>시장유형</td>
+        <td>
+          <div id="openResult"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>홈페이지</td>
+        <td>
+          <div id="urlResult"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>상품 / 점포수</td>
+        <td>
+          <div id="prodStore"></div>
+        </td>
+      </tr>
+      <tr>
+        <td>화장실/주차장</td>
+        <td>
+          <div id="restPark"></div>
+        </td>
+      </tr>
+    </table>
 
 
 
-  <div class="comment-section">
-    <h3>댓 글</h3>
-    <div class="comment-form">
-    <textarea id="comment_details" placeholder="댓글을 남겨주세요!"></textarea>
-    <button type="button" onclick="postComment()">등록</button>  
-</div>
+    <div class="comment-section">
+      <h3>댓 글</h3>
+      <div class="comment-form">
+        <textarea id="comment_details" placeholder="댓글을 남겨주세요!"></textarea>
+        <button type="button" onclick="postComment()">등록</button>
+      </div>
 
-    <ul class="comment-list">
-      
-    </ul>
+      <ul class="comment-list">
+
+      </ul>
+    </div>
   </div>
-</div>
 
-  
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
-<script type="text/javascript"
- src="//dapi.kakao.com/v2/maps/sdk.js?appkey=577a0dd41159a80d202a029c984e8544&libraries=services"></script>
-<script src="{{ url_for('static', filename='js/home.js') }}"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
-<link rel="stylesheet" href="/static/css/home.css">
-<script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-        crossorigin="anonymous"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+
+  <script type="text/javascript"
+    src="//dapi.kakao.com/v2/maps/sdk.js?appkey=9fa54e16259e049e68a535821c9b64c2&libraries=services"></script>
+  <!-- <script type="text/javascript"
+ src="//dapi.kakao.com/v2/maps/sdk.js?appkey=577a0dd41159a80d202a029c984e8544&libraries=services"></script> -->
+  <script src="{{ url_for('static', filename='js/home.js') }}"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous" />
+  <link rel="stylesheet" href="/static/css/home.css">
+  <script src="http://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
 
 
 </body>
+
 </html>
