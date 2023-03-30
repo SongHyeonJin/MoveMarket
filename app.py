@@ -190,6 +190,8 @@ def login():
             }
             access_token = create_access_token(identity=user_from_db['userId'], additional_claims=additional_claims)  # create access token
             refresh_token = create_refresh_token(identity=user_from_db['userId'], additional_claims=additional_claims)  # create refresh token
+            users_collection.update_one({'userEmail': loginEmail}, 
+                                        {"$set": {'refresh_token': refresh_token}})
 
             return jsonify(access_token=access_token, refresh_token=refresh_token), 200
 
@@ -200,6 +202,7 @@ def login():
 def refresh():
 	current_user = get_jwt_identity() # Get the identity of the current user
 	access_token = create_access_token(identity=current_user)
+    
 	return jsonify(access_token=access_token), 200
 
 # X

@@ -51,11 +51,6 @@ function getList() {
     });
 }
 
-function logout(){
-  $.removeCookie('document.cookie', {path:'/'});
-  window.location.reload();
-}
-
 function userLogin() {
     
   loginEmail = $("#loginEmail").val();
@@ -81,9 +76,11 @@ function userLogin() {
       // console.log(result);
       
       const accessToken = result['access_token']
+      const refreshToken = result['refresh_token']
       const expireDate = new Date();
       expireDate.setDate(expireDate.getDate() + 7);
-      const cookieString = `access_token=${accessToken}; expires=${expireDate.toUTCString()}; path=/`;
+      expireDate.setDate(expireDate.getDate() +30)
+      const cookieString = `access_token=${accessToken}; refresh_token=${refreshToken} expires=${expireDate.toUTCString()}; path=/`;
       document.cookie = cookieString;
      
       alert('로그인 성공')
@@ -96,16 +93,7 @@ function userLogin() {
     });
 }
 
-function setlogin() {
-  if($('#loginbtn').text() == "로그아웃")
-  {
-    document.deleteCookie("access_token");
-  }
-  else if($('#loginbtn').text() == "로그인")
-  {
-    userLogin(); 
-  }
-}
+
 
 function register() {
 

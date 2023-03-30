@@ -170,25 +170,8 @@
             </ul>
 
             <!-- Button trigger modal 우측상단 로그인, 회원가입 -->
-            <ul class="nav justify-content-end">
-                <button id="loginbtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_login"
-                    data-bs-whatever="@mdo" onclick="setlogin()">로그인</button>
-                <button id="registerbtn" type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_join"
-                    data-bs-whatever="@fat">회원가입</button>
-                <!-- {%if access_token != null %}
-                  <li class="nav-item">
-                      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_login"
-                          data-bs-whatever="@mdo">로그인</button>
-                  </li>
-                  <li class="nav-item">
-                      <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#exampleModal_join"
-                          data-bs-whatever="@fat">회원가입</button>
-                  </li>        
-                {%else%}
-                  <li class="nav-item">
-                      <button type="button" class="btn" onclick="logout()">로그아웃</button>
-                  </li>
-                {% endif %} -->
+            <ul class="nav justify-content-end" id="loginLayout">
+               
             </ul>
         </nav>
 
@@ -485,8 +468,62 @@
     <script>
         $(document).ready(function () {
             all_market();
-        });
-        
+            chkLogin();
+        });        
+
+        // nav 로그인,회원가입 || 로그아웃 부분
+        function chkLogin() {
+            let temp_login = ` <li class="nav-item">
+                                <button type="button" class="btn" id ="login" data-bs-toggle="modal" data-bs-target="#exampleModal_login"
+                                data-bs-whatever="@mdo">로그인</button>
+                               </li>
+                               <li class="nav-item">
+                               <button type="button" class="btn" id ="login" data-bs-toggle="modal" data-bs-target="#exampleModal_join"
+                                data-bs-whatever="@fat">회원가입</button>
+                                </li>`
+            let temp_logOut = ` <li class="nav-item">
+                                <button type="button" class="btn" id="logout" onclick="logout()">로그아웃</button>
+                                </li> `
+
+            login_Selector = document.querySelector("#loginLayout");
+            let chk_token = getCookie("access_token")
+            console.log(chk_token)
+            if (chk_token == null) {
+                login_Selector.innerHTML += temp_login
+            }
+            else {
+                login_Selector.innerHTML += temp_logOut
+            }
+        }
+
+        // 로그아웃 - 쿠키삭제
+        function logout() {
+            deleteCookie('access_token')
+            window.location.reload();
+        }
+
+        function getCookie(c_name) {
+            let all_cookies = document.cookie.split(";");
+            let i;
+            let x;
+            let y;
+
+            for (i = 0; i < all_cookies.length; i++) {
+                x = all_cookies[i].substr(0, all_cookies[i].indexOf("="));
+                y = all_cookies[i].substr(all_cookies[i].indexOf("=") + 1);
+                x = x.replace(/^\s+|\s+$/g, "");
+                if (x == c_name) {
+                    return unescape(y);
+                }
+            }
+        }
+
+        function deleteCookie(name) {
+            document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        }
+
+
+
 
         //페이징 관련 변수
         const rowsPerPage = 8;
