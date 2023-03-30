@@ -58,6 +58,8 @@ function postComment() {
   })
     .done(function (result) {
       console.log(result);
+      alert('댓글이 등록되었습니다.')
+      window.location.reload()
     })
     .fail(function (jqXHR) {
       console.log(jqXHR);
@@ -98,6 +100,8 @@ console.log(commentId)
   })
     .done(function (result) {
       console.log(result);
+      alert('댓글이 삭제되었습니다.')
+      window.location.reload()
     })
     .fail(function (jqXHR) {
       console.log(jqXHR);
