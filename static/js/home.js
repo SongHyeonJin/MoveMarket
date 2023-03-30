@@ -1,6 +1,3 @@
-// const accessToken = getCookieValue('access_token');
-// console.log(accessToken);
-
 function getCookieValue(name) {
   let value = "; " + document.cookie;
   let parts = value.split("; " + name + "=");
@@ -9,10 +6,8 @@ function getCookieValue(name) {
   }
 }
 
-let accessToken = getCookieValue('access_token');
-
-let decodedToken = parseJwt(accessToken)
-console.log(decodedToken)
+let accessToken = getCookieValue("access_token");
+let decodedToken = parseJwt(accessToken);
 
 function parseJwt(accessToken) {
   let base64Url = accessToken.split(".")[1];
@@ -30,26 +25,27 @@ function parseJwt(accessToken) {
   return JSON.parse(jsonPayload);
 }
 
+const userId = decodedToken["sub"];
+console.log(userId);
+
 $(document).ready(function () {
   let url = window.location.href;
   let idResult = url.substring(url.lastIndexOf("/") + 1);
   getDetails(idResult);
-  chkLogin();
+  getComments(idResult);
 });
-
-
 
 let url = window.location.href;
 let idResult = url.substring(url.lastIndexOf("/") + 1);
 //대기
 function postComment() {
-
-  comment_details = $('#comment_details').val();
+  comment_details = $("#comment_details").val();
+  console.log(comment_details)
 
   const formData = new FormData();
 
   formData.append("idResult", idResult);
-  //  formData.append("commentTitle", commentTitle);
+  formData.append("userId", userId);
   formData.append("comment_details", comment_details);
 
   $.ajax({
@@ -59,36 +55,134 @@ function postComment() {
     contentType: false,
     processData: false,
     data: formData,
-  }).done(function (result) {
-    console.log(result);
-  }).fail(function (jqXHR) {
-    console.log(jqXHR);
-  }).always(function () {
-    console.log("실행되는지 확인");
-  });
+  })
+    .done(function (result) {
+      console.log(result);
+      alert('댓글이 작성되었습니다.')
+      window.location.reload();
+    })
+    .fail(function (jqXHR) {
+      console.log(jqXHR);
+    })
+    .always(function () {
+      console.log("실행되는지 확인");
+    });
+}
+
+// $("#cuserDiv inpput").on("click", "input", function () {
+//   let test = $(this).val();
+//   console.log(test)
+//   // let td = tr.children();
+//   // let mrkt_nm = td.eq(0).text();
+//   // let mrkt_type = td.eq(1).text();
+//   // let mrkt_addr = td.eq(2).text();
+//   // let mrkt_id = td.eq(3).text();
+// });
+
+let testval;
+
+function deleteComment() {
+  comment_content =document.getElementById("commentResult").innerText;
+  let test = document.querySelector("commentResult");
+
+  // let test2 = $("#deleteKey").val();
+ 
+ 
+  // console.log("숫자 : " + commentId)
+
+  // console.log(test2)
+ 
+
+  const formData = new FormData();
+
+  formData.append("idResult", idResult);
+  formData.append("userId", userId);
+  formData.append("comment_content", comment_content);
+  formData.append("commentId",testval)
+
+
+  $.ajax({
+    type: "POST",
+    url: "/comment/delete",
+    dataType: "json",
+    contentType: false,
+    processData: false,
+    data: formData,
+  })
+    .done(function (result) {
+      console.log(result);
+      alert("댓글이 삭제되었습니다.")
+      window.location.reload();
+    })
+    .fail(function (jqXHR) {
+      console.log(jqXHR);
+    })
+    .always(function () {
+      console.log("실행되는지 확인");
+    });
 }
 
 
+function getComments(idResult) {
+
+  const formData = new FormData();
+  formData.append("idResult", idResult);
+
+  $.ajax({
+    type: "POST",
+    url: "/api/comment",
+    dataType: "JSON",
+    contentType: false,
+    processData: false,
+    data: formData,
+  })
+    .done(function (result) {
+      console.log(result);
+
+      let commentResults = result["commentResponse"];
+        commentResults.forEach((commentResult) => {
+        let deleteButton = "";
+        let comment_details = commentResult["comment_details"];
+        let cuserId = commentResult["userId"];
+        let parentId = commentResult["parentId"]
+        let commentId = commentResult["_id"]
+        testval = String(commentId)
+        // console.log(testval)
+        // console.log("테스트")
+        console.log(commentId)
+
+        if (cuserId === userId) {
+          deleteButton = `<button class="delete-comment" onclick="deleteComment()">Delete</button>`;
+        }
+
+        // <input id="deleteKey" style="display:none;" value="${commentId}" /></div>
+        // <button class="delete-comment" onclick="deleteComment()">Delete</button>
+         let comment_html = `
+                             <li class="comment">
+                             <div id="cuserDiv"class="comment-author">${cuserId}                             
+                             <div id="commentResult">${comment_details}</div>
+                             ${deleteButton} 
+                             </li>`;
+        
+          $(".comment-list").append(comment_html);
+    })
+  })
+    .fail(function (jqXHR) {
+      console.log(jqXHR);
+    })
+    .always(function () {
+      console.log("실행되는지 확인");
+    });
+}
 
 
 
 function getDetails(idResult) {
   fetch(`/api/details/${idResult}`).then((res) =>
     res.json().then((data) => {
-      console.log(data)
+      console.log(data);
+
       let detailResults = data["dataResponse"];
-      let commentResults = data["commentResponse"];
-      let commentDetails = commentResults['comment_details']
-      console.log(commentDetails)
-
-      commentResults.forEach((commentResult) => {
-
-        commentResult = commentResult['comment_details']
-
-        let comment_html = `<div>${commentResult}</div>`;
-        $("#commentResult").append(comment_html);
-
-      });
 
       detailResults.forEach((detailResult) => {
         let addrResult = detailResult["MRKTADDR1"];
@@ -100,12 +194,12 @@ function getDetails(idResult) {
         let restResult = detailResult["MRKTTOILET"];
         let parkResult = detailResult["MRKTPARK"];
 
-
         // let detailResult = detailResult['commentId']
-        console.log(urlResult)
-        urlResult = (urlResult === null || urlResult === undefined) ? "준비중" : urlResult;
-        parkResult = (parkResult == "Y") ? "있음" : "없음"
-        restResult = (restResult == "Y") ? "있음" : "없음"
+        console.log(urlResult);
+        urlResult =
+          urlResult === null || urlResult === undefined ? "준비중" : urlResult;
+        parkResult = parkResult == "Y" ? "있음" : "없음";
+        restResult = restResult == "Y" ? "있음" : "없음";
 
         console.log(nameResult);
         let name_html = `<div>${nameResult}</div>`;
@@ -125,9 +219,6 @@ function getDetails(idResult) {
 
         let restPark_html = `<div>${restResult} / ${parkResult}</div>`;
         $("#restPark").append(restPark_html);
-
-
-
 
         // 마커를 클릭하면 장소명을 표출할 인포윈도우 입니다
         var infowindow = new kakao.maps.InfoWindow({ zIndex: 1 });
@@ -177,8 +268,8 @@ function getDetails(idResult) {
             // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
             infowindow.setContent(
               '<div style="padding:5px;font-size:12px;">' +
-              place.place_name +
-              "</div>"
+                place.place_name +
+                "</div>"
             );
             infowindow.open(map, marker);
           });
@@ -187,13 +278,3 @@ function getDetails(idResult) {
     })
   );
 }
-
-// function parseJwt(token) {
-//   var base64Url = token.split('.')[1];
-//   var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-//   var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function (c) {
-//     return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-//   }).join(''));
-
-//   return JSON.parse(jsonPayload);
-// }
