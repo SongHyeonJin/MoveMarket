@@ -262,19 +262,20 @@ def comment_post():
 @app.route("/comment/delete", methods=["POST"])
 def comment_delete():
      commentId = request.form.get("commentId")
-     comment_content = request.form.get("comment_content")
+     print(commentId)
+    #  comment_content = request.form.get("comment_content")
      idResult = request.form['idResult']
      userId = request.form.get("userId")
 
     #  commentId = request.form["test2"]
     #  idResult = request.form["idResult"]
      
-     commentId2 = ObjectId(commentId)   
+     commentId = ObjectId(commentId)   
     
      doc ={
           'parentId':idResult,     
         #   'userId' : userId,
-          '_id':commentId2
+          '_id':commentId
      }        
      find_data = comments_collection.find_one(doc)
      print(find_data)      
