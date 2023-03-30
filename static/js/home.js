@@ -58,8 +58,6 @@ function postComment() {
   })
     .done(function (result) {
       console.log(result);
-      alert('댓글이 작성되었습니다.')
-      window.location.reload();
     })
     .fail(function (jqXHR) {
       console.log(jqXHR);
@@ -79,26 +77,15 @@ function postComment() {
 //   // let mrkt_id = td.eq(3).text();
 // });
 
-let testval;
 
-function deleteComment() {
-  comment_content =document.getElementById("commentResult").innerText;
-  let test = document.querySelector("commentResult");
 
-  // let test2 = $("#deleteKey").val();
- 
- 
-  // console.log("숫자 : " + commentId)
-
-  // console.log(test2)
- 
-
+function deleteComment(commentId) {
+console.log(commentId)
   const formData = new FormData();
-
   formData.append("idResult", idResult);
   formData.append("userId", userId);
-  formData.append("comment_content", comment_content);
-  formData.append("commentId",testval)
+  //formData.append("comment_content", comment_content);
+  formData.append("commentId", commentId);
 
 
   $.ajax({
@@ -111,8 +98,6 @@ function deleteComment() {
   })
     .done(function (result) {
       console.log(result);
-      alert("댓글이 삭제되었습니다.")
-      window.location.reload();
     })
     .fail(function (jqXHR) {
       console.log(jqXHR);
@@ -121,7 +106,6 @@ function deleteComment() {
       console.log("실행되는지 확인");
     });
 }
-
 
 function getComments(idResult) {
 
@@ -152,19 +136,23 @@ function getComments(idResult) {
         console.log(commentId)
 
         if (cuserId === userId) {
-          deleteButton = `<button class="delete-comment" onclick="deleteComment()">Delete</button>`;
+          deleteButton = `<button class="delete-comment" onclick="deleteComment('${commentId}')" data-comment-id="${commentId}">Delete</button>`;
+
+
         }
 
         // <input id="deleteKey" style="display:none;" value="${commentId}" /></div>
         // <button class="delete-comment" onclick="deleteComment()">Delete</button>
          let comment_html = `
                              <li class="comment">
-                             <div id="cuserDiv"class="comment-author">${cuserId}                             
-                             <div id="commentResult">${comment_details}</div>
+                             <div class="comment-author">${cuserId}</div>                             
+                             <div class="comment-content"  id="commentResult">${comment_details}</div>
                              ${deleteButton} 
                              </li>`;
         
           $(".comment-list").append(comment_html);
+
+
     })
   })
     .fail(function (jqXHR) {
